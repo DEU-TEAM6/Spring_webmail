@@ -10,19 +10,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 작성일:2023.03.31
+ * ��¥:2023.03.31
  * @author Jung-Hyeonsu
  */
 @Getter @Setter
 public class loadDB {
-    private volatile static loadDB dbInstance = null; // volatile 키워드로 dbinstance에 값을 할당하거나 수정할 때 메인 메모리에 바로 씀
+    private volatile static loadDB dbInstance = null; 
     private String path = "db-connection.properties";
     private String id = "";
     private String pw= "";
     private String url= "";
     private String driver= "";
     
-    private loadDB(){ // private로 생성자를 만들어 외부에서의 생성을 막음
+    private loadDB(){ 
         try {
                 Properties props = new Properties();
                 Properties session = System.getProperties();
@@ -35,7 +35,7 @@ public class loadDB {
                 System.out.println(e);
             }
     }
-    public static synchronized loadDB getInstance() { // synchronized 동기화를 활용해 스레드를 안전하게 만듬
+    public static synchronized loadDB getInstance() { 
         if (dbInstance == null) {
             synchronized (loadDB.class){
                 if(dbInstance == null){
