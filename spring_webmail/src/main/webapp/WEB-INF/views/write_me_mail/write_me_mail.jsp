@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,6 +14,12 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%@include file="../header.jspf"%>
+
+        <div id="sidebar">
+            <jsp:include page="../sidebar_previous_menu.jsp" />
+        </div>
         <h1>Hello World!</h1>
+        <%@include file="../footer.jspf"%>
     </body>
 </html>
