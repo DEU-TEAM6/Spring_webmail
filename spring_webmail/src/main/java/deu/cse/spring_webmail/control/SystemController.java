@@ -219,6 +219,11 @@ public class SystemController {
     public String me_mail() {
         return "me_mail/me_mail";
     }
+    
+     @GetMapping("/pass_change")
+    public String pass_change() {
+        return "pass_change/pass_change";
+    }
 
     /**
      *
