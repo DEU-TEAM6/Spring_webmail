@@ -220,6 +220,11 @@ public class SystemController {
         return "me_mail/me_mail";
     }
     
+    @GetMapping("/me_mail_menu")
+    public String me_mail_menu() {
+        return "me_mail/me_mail_menu";
+    }
+    
      @GetMapping("/pass_change")
     public String pass_change() {
         return "pass_change/pass_change";
