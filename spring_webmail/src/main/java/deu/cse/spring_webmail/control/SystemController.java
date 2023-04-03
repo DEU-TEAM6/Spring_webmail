@@ -214,6 +214,11 @@ public class SystemController {
         model.addAttribute("userList", getUserList());
         return "admin/delete_user";
     }
+    
+    @GetMapping("/me_mail")
+    public String me_mail() {
+        return "me_mail/me_mail";
+    }
 
     /**
      *
