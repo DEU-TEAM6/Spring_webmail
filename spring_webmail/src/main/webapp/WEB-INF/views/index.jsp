@@ -35,6 +35,8 @@
                 암&nbsp;&nbsp;&nbsp;호: <input type="password" name="passwd" size="20"> <br /> <br />
                 <input type="submit" value="로그인" name="B1">&nbsp;&nbsp;&nbsp;
                 <a href ="register"><input type="button" value="회원가입" name="cancel"></a>&nbsp;&nbsp;&nbsp;
+                <a href ="register"><input type="button" value="테스트" name="cancel">
+                    <a href ="test"><input type="button" value="테스트2" name="cancel">
                 <input type="reset" value="다시 입력" name="B2">
             </form>
         </div>
