@@ -11,20 +11,25 @@
     <body>
         <%@include file="header.jspf"%>
         <br /><br />
-        <span style="color:blue">비밀번호는 영어, 숫자, 특수문자 조합이며, 8자 이상으로 작성하세요.</span> <br /><br />
+        <div class="center">
+            <span style="color:blue">비밀번호는 최소 8자리에서 최대 16자리까지 숫자, 영문, 특수문자 각 1개 이상 포함</span> <br /><br />
+        </div>
         <form name="register_form" action="register.do" method="POST">
-            <table border="0" margin="auto" text-align="center">
+            <table border="0">
                 <tr>
                     <td>사용자 ID</td>
                     <td> <input type="text" name="id" value="" size="20" />  </td>
                 </tr>
                 <tr>
                     <td>암호 </td>
-                    <td> <input type="password" name="password" value="" size="20"/> </td>
+                    <td> <input type="password" name="password" value="" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$" id="pw" size="20"/> </td>
                 </tr>
                 <tr>
                     <td>암호 확인 </td>
-                    <td> <input type="password" name="passwordcheck" value="" size="20"/> </td>
+                    <td> 
+                        <input type="password" name="passwordcheck"  pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$" value="" id="pw2" size="20"/> 
+                        <font id ="checkPw" size="2"></font>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -34,6 +39,7 @@
                     </td>
                 </tr>
             </table>
-           <%@include file="footer.jspf"%>
+
+            <%@include file="footer.jspf"%>
     </body>
 </html>

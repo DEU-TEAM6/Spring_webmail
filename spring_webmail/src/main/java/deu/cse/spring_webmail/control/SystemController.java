@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import static java.lang.System.out;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
@@ -184,16 +185,21 @@ public class SystemController {
     }
     
     @PostMapping("/register.do")
-    public String registerDo(@RequestParam String id, @RequestParam String password,
+    public String registerDo(@RequestParam String id, @RequestParam String password,@RequestParam String passwordcheck,
             RedirectAttributes attrs) {
         log.debug("register.do: id = {}, password = {}, port = {}",
                 id, password, JAMES_CONTROL_PORT);
-
+        
+        if(password != passwordcheck){
+            StringBuilder Popup = new StringBuilder();
+                Popup.append("<script>alert('비밀번호가 일치하지 않습니다!'); location.href='register.jsp';</script>");
+                out.println(Popup.toString());
+        }
         try {
             String cwd = ctx.getRealPath(".");
             UserAdminAgent agent = new UserAdminAgent(JAMES_HOST, JAMES_CONTROL_PORT, cwd,
                     ROOT_ID, ROOT_PASSWORD, ADMINISTRATOR);
-
+            
             // if (addUser successful)  사용자 등록 성공 팦업창
             // else 사용자 등록 실패 팝업창
             if (agent.addUser(id, password)) {
