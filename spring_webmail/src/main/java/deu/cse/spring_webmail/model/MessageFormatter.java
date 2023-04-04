@@ -47,7 +47,7 @@ public class MessageFormatter {
             // 추출한 정보를 출력 포맷 사용하여 스트링으로 만들기
             buffer.append("<tr> "
                     + " <td id=no>" + (i + 1) + " </td> "
-                    + " <td id=sender>" + parser.getFromAddress() + "</td>"
+                    + " <td id=sender>" + parser.getFromAddress() + "</td>" //이걸 아이디랑 비교해서 갖고오기
                     + " <td id=subject> "
                     + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
                     + parser.getSubject() + "</a> </td>"

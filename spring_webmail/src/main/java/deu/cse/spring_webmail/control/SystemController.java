@@ -138,7 +138,21 @@ public class SystemController {
         model.addAttribute("messageList", messageList);
         return "main_menu";
     }
+    
+    @GetMapping("/me_mail_menu")
+    public String memailmenu(Model model) {
+        Pop3Agent pop3 = new Pop3Agent();
+        pop3.setHost((String) session.getAttribute("host"));
+        pop3.setUserid((String) session.getAttribute("userid"));
+        pop3.setPassword((String) session.getAttribute("password"));
 
+        String memessageList = pop3.getmeMessageList();
+        model.addAttribute("memessageList", memessageList);
+        return "me_mail_menu";
+    }
+
+    
+    
     @GetMapping("/admin_menu")
     public String adminMenu(Model model) {
         log.debug("root.id = {}, root.password = {}, admin.id = {}",
@@ -222,7 +236,7 @@ public class SystemController {
     
     @GetMapping("/me_mail_menu")
     public String me_mail_menu() {
-        return "me_mail/me_mail_menu";
+        return "me_mail_menu";
     }
     
      @GetMapping("/pass_change")
