@@ -6,6 +6,7 @@ package deu.cse.spring_webmail.control;
 
 import deu.cse.spring_webmail.model.Pop3Agent;
 import deu.cse.spring_webmail.model.UserAdminAgent;
+import deu.cse.spring_webmail.model.MessageFormatter;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -134,22 +135,12 @@ public class SystemController {
         pop3.setUserid((String) session.getAttribute("userid"));
         pop3.setPassword((String) session.getAttribute("password"));
 
+        MessageFormatter formatter = new MessageFormatter((String) session.getAttribute("userid"));
         String messageList = pop3.getMessageList();
         model.addAttribute("messageList", messageList);
         return "main_menu";
     }
     
-    @GetMapping("/me_mail_menu")
-    public String memailmenu(Model model) {
-        Pop3Agent pop3 = new Pop3Agent();
-        pop3.setHost((String) session.getAttribute("host"));
-        pop3.setUserid((String) session.getAttribute("userid"));
-        pop3.setPassword((String) session.getAttribute("password"));
-
-        String memessageList = pop3.getmeMessageList();
-        model.addAttribute("memessageList", memessageList);
-        return "me_mail_menu";
-    }
 
     
     

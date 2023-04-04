@@ -123,7 +123,7 @@ public class Pop3Agent {
         }
     }
     
-    public String getmeMessageList() {
+    public String getmeMessageList() { //나에게 보여줄 메시지 리스트
         String result = "";
         Message[] messages = null;
 
@@ -188,7 +188,7 @@ public class Pop3Agent {
         }
     }
     
-        public String getmeMessage(int n) {
+        public String getmeMessage(int n) { //나에게 보여줄 메시지리스트
         String result = "POP3  서버 연결이 되지 않아 메시지를 볼 수 없습니다.";
 
         if (!connectToStore()) {
