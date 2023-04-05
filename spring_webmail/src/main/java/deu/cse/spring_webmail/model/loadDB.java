@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * ³¯Â¥:2023.03.31
+ * 2023.03.31
  * @author Jung-Hyeonsu
  */
 @Getter @Setter

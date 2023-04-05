@@ -115,6 +115,9 @@ public class MessageParser {
                 body = (String) p.getContent();
                 if (p.isMimeType("text/plain")) {
                     body = body.replaceAll("\r\n", " <br>");
+                    //20183215 정현수 XXS 방어
+                    body = body.replaceAll("<","&lt;");
+                    body = body.replaceAll(">","&gt;");
                 }
             } else if (p.isMimeType("multipart/alternative")) {
                 // html text보다  plain text 선호
