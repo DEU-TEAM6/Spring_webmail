@@ -11,7 +11,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import deu.cse.spring_webmail.control.SystemController;
-import deu.cse.spring_webmail.model.MessageParser;
 import lombok.Setter;
 
 /**
@@ -21,7 +20,7 @@ import lombok.Setter;
 @Slf4j
 @RequiredArgsConstructor
 public class MessageFormatter {
-    @NonNull private String userid="";  // 파일 임시 저장 디렉토리 생성에 필요
+    @NonNull private String userid;  // 파일 임시 저장 디렉토리 생성에 필요
     private HttpServletRequest request = null;
     
     // 220612 LJM - added to implement REPLY
@@ -116,10 +115,13 @@ public class MessageFormatter {
                 + " <th> 보낸 날짜 </td>   "
                 + " <th> 삭제 </td>   "
                 + " </tr>");
-
+        
         for (int i = messages.length - 1; i >= 0; i--) {
             MessageParser parser = new MessageParser(messages[i], userid);
             parser.parse(false);  // envelope 정보만 필요
+            if (!parser.getFromAddress().equals(userid)) {
+            continue; // 보낸 사람이 내 아이디가 아니면 건너뛰기
+        }
             // 메시지 헤더 포맷
             // 추출한 정보를 출력 포맷 사용하여 스트링으로 만들기
             buffer.append("<tr> "
@@ -140,7 +142,7 @@ public class MessageFormatter {
 //        return "MessageFormatter 테이블 결과";
     }
 
-    public String getmeMessage(Message message) { //내게쓴
+   public String getmeMessage(Message message) { //내게쓴
         StringBuilder buffer = new StringBuilder();
 
         // MessageParser parser = new MessageParser(message, userid);
@@ -150,17 +152,13 @@ public class MessageFormatter {
         sender = parser.getFromAddress();
         subject = parser.getSubject();
         body = parser.getBody();
-        if(parser.getFromAddress().equals(userid)){
         buffer.append("보낸 사람: " + parser.getFromAddress() + " <br>");
         buffer.append("받은 사람: " + parser.getToAddress() + " <br>");
         buffer.append("Cc &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : " + parser.getCcAddress() + " <br>");
         buffer.append("보낸 날짜: " + parser.getSentDate() + " <br>");
         buffer.append("제 &nbsp;&nbsp;&nbsp;  목: " + parser.getSubject() + " <br> <hr>");
         buffer.append(parser.getBody());
-        }
-        else{
-            
-        }
+    
         
         String attachedFile = parser.getFileName();
         if (attachedFile != null) {
@@ -172,6 +170,7 @@ public class MessageFormatter {
 
         return buffer.toString();
     }
+       
     /**
      public String getmeMessage(Message message) { //내게쓴
     StringBuilder buffer = new StringBuilder();
