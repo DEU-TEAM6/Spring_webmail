@@ -144,7 +144,7 @@ public class Pop3Agent {
             folder.fetch(messages, fp);
 
             MessageFormatter formatter = new MessageFormatter(userid);  //3.5
-            result = formatter.getMessageTable(messages);   // 3.6
+            result = formatter.getmeMessageTable(messages);   // 3.6
 
             folder.close(true);  // 3.7
             store.close();       // 3.8

@@ -104,7 +104,7 @@ public class MessageFormatter {
         sender = parser.getFromAddress();
         subject = parser.getSubject();
         body = parser.getBody();
-        if(parser.getFromAddress().equals(userid)){
+     
         buffer.append("보낸 사람: " + parser.getFromAddress() + " <br>");
         buffer.append("받은 사람: " + parser.getToAddress() + " <br>");
         buffer.append("Cc &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : " + parser.getCcAddress() + " <br>");
@@ -112,7 +112,7 @@ public class MessageFormatter {
         buffer.append("제 &nbsp;&nbsp;&nbsp;  목: " + parser.getSubject() + " <br> <hr>");
 
         buffer.append(parser.getBody());
-        }
+        
         String attachedFile = parser.getFileName();
         if (attachedFile != null) {
             buffer.append("<br> <hr> 첨부파일: <a href=download"
@@ -147,6 +147,7 @@ public class MessageFormatter {
        
             // 메시지 헤더 포맷
             // 추출한 정보를 출력 포맷 사용하여 스트링으로 만들기
+               if(parser.getFromAddress().equals(userid)){
             buffer.append("<tr> "
                     + " <td id=no>" + (i + 1) + " </td> "
                     + " <td id=sender>" + parser.getFromAddress() + "</td>" //이걸 아이디랑 비교해서 갖고오기
@@ -158,6 +159,7 @@ public class MessageFormatter {
                     + "<a href=delete_mail.do"
                     + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
                     + " </tr>");
+               }
         }
         buffer.append("</table>");
 
@@ -165,36 +167,5 @@ public class MessageFormatter {
 //        return "MessageFormatter 테이블 결과";
     }
 
-  
-       
-    /**
-     public String getmeMessage(Message message) { //내게쓴
-    StringBuilder buffer = new StringBuilder();
-    
-    // MessageParser parser = new MessageParser(message, userid);
-    MessageParser parser = new MessageParser(message, userid, request);
-    parser.parse(true);
-    
-    String fromAddress = parser.getFromAddress();
-    if (fromAddress != null && fromAddress.equals(userid)) { // 내게 쓴 메일인 경우에만 처리
-        buffer.append("보낸 사람: " + parser.getFromAddress() + " <br>");
-        buffer.append("받은 사람: " + parser.getToAddress() + " <br>");
-        buffer.append("Cc &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : " + parser.getCcAddress() + " <br>");
-        buffer.append("보낸 날짜: " + parser.getSentDate() + " <br>");
-        buffer.append("제 &nbsp;&nbsp;&nbsp;  목: " + parser.getSubject() + " <br> <hr>");
-        buffer.append(parser.getBody());
-        
-        String attachedFile = parser.getFileName();
-        if (attachedFile != null) {
-            buffer.append("<br> <hr> 첨부파일: <a href=download"
-                    + "?userid=" + this.userid
-                    + "&filename=" + attachedFile.replaceAll(" ", "%20")
-                    + " target=_top> " + attachedFile + "</a> <br>");
-        }
-    }
-    
-    return buffer.toString();
-}
-     * 
-     */
+ 
 }
