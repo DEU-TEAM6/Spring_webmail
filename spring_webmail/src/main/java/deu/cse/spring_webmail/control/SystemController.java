@@ -254,6 +254,16 @@ public class SystemController {
         userList.sort((e1, e2) -> e1.compareTo(e2));
         return userList;
     }
+    
+    @GetMapping("/me_mail")
+    public String me_mail() {
+        return "me_mail/me_mail";
+    }
+    
+    @GetMapping("/me_mail_menu")
+    public String me_mail_menu() {
+        return "me_mail_menu";
+    }
 
     @GetMapping("/img_test")
     public String imgTest() {
