@@ -153,36 +153,6 @@ public class Pop3Agent {
             return result;
         }
     }
-     public String getmeMessage(int n) {
-        String result = "POP3  서버 연결이 되지 않아 메시지를 볼 수 없습니다.";
-
-        if (!connectToStore()) {
-            log.error("POP3 connection failed!");
-            return result;
-        }
-
-        try {
-            Folder folder = store.getFolder("INBOX");
-            folder.open(Folder.READ_ONLY);
-
-            Message message = folder.getMessage(n);
-
-            MessageFormatter formatter = new MessageFormatter(userid);
-            formatter.setRequest(request);  // 210308 LJM - added
-            result = formatter.getMessage(message);
-            sender = formatter.getSender();  // 220612 LJM - added
-            subject = formatter.getSubject();
-            body = formatter.getBody();
-
-            folder.close(true);
-            store.close();
-        } catch (Exception ex) {
-            log.error("Pop3Agent.getMessageList() : exception = {}", ex);
-            result = "Pop3Agent.getMessage() : exception = " + ex;
-        } finally {
-            return result;
-        }
-    }
      
     public String getmeMessageList() {
         String result = "";
