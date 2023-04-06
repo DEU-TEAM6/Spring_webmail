@@ -288,7 +288,14 @@ public class SystemController {
     }
 
     @GetMapping("/me_mail_menu")
-    public String me_mail_menu() {
+    public String me_mail_menu(Model model) {
+        Pop3Agent pop3 = new Pop3Agent();
+        pop3.setHost((String) session.getAttribute("host"));
+        pop3.setUserid((String) session.getAttribute("userid"));
+        pop3.setPassword((String) session.getAttribute("password"));
+        
+        String meMessageList = pop3.getmeMessageList();
+        model.addAttribute("meMessageList", meMessageList);
         return "me_mail_menu";
     }
 
