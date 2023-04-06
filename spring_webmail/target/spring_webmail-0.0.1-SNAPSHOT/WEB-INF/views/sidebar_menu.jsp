@@ -20,6 +20,7 @@
 
         <p> <a href="main_menu"> 메일 읽기 </a> </p>
         <p> <a href="write_mail"> 메일 쓰기 </a> </p>
+        <p> <a href="changePw"> 비밀번호 변경 </a> </p>
         <p> <a href="me_mail"> 내게 쓰기</a> </p>
         <p> <a href="me_mail_menu"> 내게 쓴 메일함 </a> </p>
         <p> <a href="spam_mail"> 스팸 메일함 </a> </p>

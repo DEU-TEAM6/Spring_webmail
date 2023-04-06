@@ -178,28 +178,22 @@ public class SystemController {
 
         return "redirect:/admin_menu";
     }
-    
+
     @GetMapping("/register")
     public String register() {
         return "register";
     }
-    
+
     @PostMapping("/register.do")
-    public String registerDo(@RequestParam String id, @RequestParam String password,@RequestParam String passwordcheck,
+    public String registerDo(@RequestParam String id, @RequestParam String password, @RequestParam String passwordcheck,
             RedirectAttributes attrs) {
         log.debug("register.do: id = {}, password = {}, port = {}",
                 id, password, JAMES_CONTROL_PORT);
-        
-        if(password != passwordcheck){
-            StringBuilder Popup = new StringBuilder();
-                Popup.append("<script>alert('비밀번호가 일치하지 않습니다!'); location.href='register.jsp';</script>");
-                out.println(Popup.toString());
-        }
         try {
             String cwd = ctx.getRealPath(".");
             UserAdminAgent agent = new UserAdminAgent(JAMES_HOST, JAMES_CONTROL_PORT, cwd,
                     ROOT_ID, ROOT_PASSWORD, ADMINISTRATOR);
-            
+
             // if (addUser successful)  사용자 등록 성공 팦업창
             // else 사용자 등록 실패 팝업창
             if (agent.addUser(id, password)) {
@@ -212,6 +206,39 @@ public class SystemController {
         }
 
         return "redirect:/";
+    }
+
+    @GetMapping("changePw")
+    public String changePw() {
+        return "change_password";
+    }
+
+    @PostMapping("changePw.do")
+    public String changePwDo(@RequestParam String id, @RequestParam String oldpassword, @RequestParam String password, RedirectAttributes attrs) {
+        String path = "";
+        String sessionPW = (String) session.getAttribute("password");
+        
+        log.debug("register.do: id = {}, password = {}, port = {}",
+                id, password, JAMES_CONTROL_PORT);
+        try {
+            String cwd = ctx.getRealPath(".");
+            UserAdminAgent agent = new UserAdminAgent(JAMES_HOST, JAMES_CONTROL_PORT, cwd,
+                    ROOT_ID, ROOT_PASSWORD, ADMINISTRATOR);
+            if (!sessionPW.equals(oldpassword)) { // 현재 비밀번호가 일치하지 않았을 경우
+                attrs.addFlashAttribute("msg", String.format("사용자(%s)님 기존 비밀번호가 일치하지 않습니다. 다시 확인해주세요.", id));
+                path = "changePw";
+            } else {// 현재 비밀번호가 일치한 경우
+                if (agent.changePw(id, password)) { // 비밀번호가 정상적으로 변경된 경우
+                    attrs.addFlashAttribute("msg", String.format("사용자(%s)님 비밀번호 변경을 성공하였습니다. 다시 로그인해주세요.", id));
+                } else { // 비밀번호 변경이 되지 않았을 경우
+                    attrs.addFlashAttribute("msg", String.format("사용자(%s)님 비밀번호 변경을 실패하였습니다.", id));
+                    path = "changePw";
+                }
+            }
+        } catch (Exception ex) {
+            log.error("changePw.do : 예외 = {}", ex);
+        }
+         return "redirect:/" + path;
     }
 
     @GetMapping("/delete_user")
@@ -254,12 +281,12 @@ public class SystemController {
         userList.sort((e1, e2) -> e1.compareTo(e2));
         return userList;
     }
-    
+
     @GetMapping("/me_mail")
     public String me_mail() {
         return "me_mail/me_mail";
     }
-    
+
     @GetMapping("/me_mail_menu")
     public String me_mail_menu() {
         return "me_mail_menu";
@@ -272,9 +299,9 @@ public class SystemController {
 
     /**
      * https://34codefactory.wordpress.com/2019/06/16/how-to-display-image-in-jsp-using-spring-code-factory/
-     * 
+     *
      * @param imageName
-     * @return 
+     * @return
      */
     @RequestMapping(value = "/get_image/{imageName}")
     @ResponseBody
@@ -294,7 +321,7 @@ public class SystemController {
         byte[] imageInByte;
         try {
             byteArrayOutputStream = new ByteArrayOutputStream();
-            bufferedImage = ImageIO.read(new File(folderPath + File.separator + imageName) );
+            bufferedImage = ImageIO.read(new File(folderPath + File.separator + imageName));
             String format = imageName.substring(imageName.lastIndexOf(".") + 1);
             ImageIO.write(bufferedImage, format, byteArrayOutputStream);
             byteArrayOutputStream.flush();

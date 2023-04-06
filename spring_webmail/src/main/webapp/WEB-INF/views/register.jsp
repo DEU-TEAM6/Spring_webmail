@@ -1,12 +1,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="deu.cse.spring_webmail.control.CommandType"%>
 
+<!-- 
+20183215 정현수 
+2023.03.31
+-->
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>회원가입 화면</title>
         <link type="text/css" rel="stylesheet" href="css/main_style.css" />
+        <script type="text/javascript" src="js/register.js"></script>
     </head>
     <body>
         <%@include file="header.jspf"%>
@@ -39,19 +44,6 @@
                     </td>
                 </tr>
             </table>
-            
-            <script>
-                function checkPassword() {
-                    
-                    var pw1 = document.getElementById( 'pw1' ).value;
-                    var pw2 = document.getElementById( 'pw2' ).value;
-                    if(pw1 != pw2){
-                        alert("비밀번호가 일치하지 않습니다.");
-                        return false;
-                    }
-                }
-            </script>
-
             <%@include file="footer.jspf"%>
     </body>
 </html>

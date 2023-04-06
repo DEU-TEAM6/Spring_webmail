@@ -111,6 +111,36 @@ public class UserAdminAgent {
             return status;
         }
     }  // addUser()
+    
+    public boolean changePw(String userId, String newPassword) {
+        boolean status = false;
+        byte[] messageBuffer = new byte[1024];
+
+        log.debug("changPw() called");
+        if (!isConnected) {
+            return status;
+        }
+
+        try {
+            // 1: "setPassword" command
+            String changePwdCommand = "setPassword " + userId + " " + newPassword + EOL;
+            os.write(changePwdCommand.getBytes());
+
+            status = true;
+            
+            // 2: 연결 종료
+            quit();
+            System.out.flush();  // for test
+            socket.close();
+            
+        } catch (Exception ex) {
+            log.error("changePw 예외: {}", ex.getMessage());
+            status = false;
+        } finally {
+            // 3: 상태 반환
+            return status;
+        }
+    }
 
     public List<String> getUserList() {
         List<String> userList = new LinkedList<String>();
