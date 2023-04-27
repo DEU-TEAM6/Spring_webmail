@@ -103,11 +103,11 @@ public class MessageFormatter {
             // 메시지 헤더 포맷
             // 추출한 정보를 출력 포맷 사용하여 스트링으로 만들기
             
-            if(chk_info.equals("human")){
-                if(parser.getFromAddress().contains(searchWord)){
+            if(chk_info.equals("human")){ // 보낸 사람을 선택한 경우
+                if(parser.getFromAddress().contains(searchWord)){ // 검색한 단어가 제목에 포함된 경우
                     buffer.append("<tr> "
                         + " <td id=no>" + (i + 1) + " </td> "
-                        + " <td id=sender>" + parser.getFromAddress() + "</td>" //이걸 아이디랑 비교해서 갖고오기
+                        + " <td id=sender>" + parser.getFromAddress() + "</td>" 
                         + " <td id=subject> "
                         + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
                         + parser.getSubject() + "</a> </td>"
@@ -118,11 +118,11 @@ public class MessageFormatter {
                         + " </tr>");
                 }
             }
-            else {
-                if(parser.getSubject().contains(searchWord)){
+            else { // 제목을 선택한 경우
+                if(parser.getSubject().contains(searchWord)){ // 검색한 단어가 제목에 포함된 경우
                     buffer.append("<tr> "
                         + " <td id=no>" + (i + 1) + " </td> "
-                        + " <td id=sender>" + parser.getFromAddress() + "</td>" //이걸 아이디랑 비교해서 갖고오기
+                        + " <td id=sender>" + parser.getFromAddress() + "</td>"
                         + " <td id=subject> "
                         + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
                         + parser.getSubject() + "</a> </td>"

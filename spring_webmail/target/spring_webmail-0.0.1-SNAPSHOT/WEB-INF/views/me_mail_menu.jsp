@@ -40,6 +40,15 @@
 
         <!-- 메시지 삭제 링크를 누르면 바로 삭제되어 실수할 수 있음. 해결 방법은? -->
         <div id="main">
+            <center>
+                <form name="searchForm" action="search" method="POST">
+                    <input type="radio" name="chk_info" value="human"checked>보낸 사람
+                    <input type="radio" name="chk_info" value="contents" >제목
+                    <br>
+                    <input type="text" name="searchWord" placeholder="검색어 입력">&nbsp;<input type="submit" value="검색" name="search"/>
+                </form>
+            </center> 
+            <br>
               ${meMessageList}
         </div>
 

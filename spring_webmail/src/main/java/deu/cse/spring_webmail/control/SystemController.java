@@ -251,6 +251,8 @@ public class SystemController {
         String searchList = pop3.getSearchList(chk_info, searchWord);
         System.out.println(chk_info);
         model.addAttribute("searchList", searchList);
+        model.addAttribute("chk_info",chk_info);
+        model.addAttribute("searchWord",searchWord);
         return "search";
     }
 

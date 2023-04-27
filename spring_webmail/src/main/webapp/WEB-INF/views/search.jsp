@@ -27,32 +27,45 @@
         <link type="text/css" rel="stylesheet" href="css/main_style.css" />
         <script>
             <c:if test="${!empty msg}">
-            alert("${msg}");
-            </c:if>
-        </script>
-    </head>
-    <body>
-        <%@include file="header.jspf"%>
+                alert("${msg}");
+        </c:if>
+    </script>
+</head>
+<body>
+    <%@include file="header.jspf"%>
 
-        <div id="sidebar">
-            <jsp:include page="sidebar_menu.jsp" />
-        </div>
+    <div id="sidebar">
+        <jsp:include page="sidebar_menu.jsp" />
+    </div>
 
 
-        <!-- 메시지 삭제 링크를 누르면 바로 삭제되어 실수할 수 있음. 해결 방법은? -->
-        <div id="main">
-            <center>
-                <form name="searchForm" action="search" method="POST">
-                    <input type="radio" name="chk_info" value="human"checked>보낸 사람
-                    <input type="radio" name="chk_info" value="contents" >제목
-                    <br>
-                    <input type="text" name="searchWord" placeholder="검색어 입력">&nbsp;<input type="submit" value="검색" name="search"/>
-                </form>
-            </center> 
-            <br>
-            ${searchList}
-        </div>
+    <!-- 메시지 삭제 링크를 누르면 바로 삭제되어 실수할 수 있음. 해결 방법은? -->
+    <div id="main">
+        <center>
+            <form name="searchForm" action="search" method="POST">
+                <input type="radio" name="chk_info" id="human" value="human"checked>보낸 사람
+                <input type="radio" name="chk_info" id="contents" value="contents" >제목
+                <br>
+                <input type="text" name="searchWord" placeholder="검색어 입력" value="${searchWord}">&nbsp;<input type="submit" value="검색" name="search"/>
+            </form>
+        </center> 
+        <br>
+        ${searchList}
+    </div>
 
-        <%@include file="footer.jspf"%>
-    </body>
+    <%@include file="footer.jspf"%>
+    <script>
+        function toggleRadio() {
+            var radio1 = document.getElementById("human");
+            var radio2 = document.getElementById("contents");
+            if (${chk_info}.equals("human")) {
+                radio1.checked = true;
+                radio2.checked = false;
+            } else {
+                radio2.checked = true;
+                radio1.checked = false;
+            }
+        }
+    </script>
+</body>
 </html>
