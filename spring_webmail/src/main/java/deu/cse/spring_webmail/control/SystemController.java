@@ -135,7 +135,7 @@ public class SystemController {
         pop3.setUserid((String) session.getAttribute("userid"));
         pop3.setPassword((String) session.getAttribute("password"));
 
-        String messageList = pop3.getMessageList();
+        String messageList = pop3.getMessageList(0);
         model.addAttribute("messageList", messageList);
         return "main_menu";
     }
@@ -294,7 +294,7 @@ public class SystemController {
         pop3.setUserid((String) session.getAttribute("userid"));
         pop3.setPassword((String) session.getAttribute("password"));
         
-        String meMessageList = pop3.getmeMessageList();
+        String meMessageList = pop3.getMessageList(1);
         model.addAttribute("meMessageList", meMessageList);
         return "me_mail_menu";
     }
