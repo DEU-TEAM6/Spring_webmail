@@ -135,7 +135,7 @@ public class SystemController {
         pop3.setUserid((String) session.getAttribute("userid"));
         pop3.setPassword((String) session.getAttribute("password"));
 
-        String messageList = pop3.getMessageList();
+        String messageList = pop3.getMessageList(0);
         model.addAttribute("messageList", messageList);
         return "main_menu";
     }
@@ -240,6 +240,21 @@ public class SystemController {
         }
          return "redirect:/" + path;
     }
+    
+    @PostMapping("/search")
+    public String search(Model model, @RequestParam String chk_info, @RequestParam String searchWord) {
+        Pop3Agent pop3 = new Pop3Agent();
+        pop3.setHost((String) session.getAttribute("host"));
+        pop3.setUserid((String) session.getAttribute("userid"));
+        pop3.setPassword((String) session.getAttribute("password"));
+
+        String searchList = pop3.getSearchList(chk_info, searchWord);
+        System.out.println(chk_info);
+        model.addAttribute("searchList", searchList);
+        model.addAttribute("chk_info",chk_info);
+        model.addAttribute("searchWord",searchWord);
+        return "search";
+    }
 
     @GetMapping("/delete_user")
     public String deleteUser(Model model) {
@@ -294,7 +309,7 @@ public class SystemController {
         pop3.setUserid((String) session.getAttribute("userid"));
         pop3.setPassword((String) session.getAttribute("password"));
         
-        String meMessageList = pop3.getmeMessageList();
+        String meMessageList = pop3.getMessageList(1);
         model.addAttribute("meMessageList", meMessageList);
         return "me_mail_menu";
     }

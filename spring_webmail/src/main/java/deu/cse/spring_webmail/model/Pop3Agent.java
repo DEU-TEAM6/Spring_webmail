@@ -89,7 +89,7 @@ public class Pop3Agent {
     /*
      * 페이지 단위로 메일 목록을 보여주어야 함.
      */
-    public String getMessageList() {
+    public String getMessageList(int n) {
         String result = "";
         Message[] messages = null;
 
@@ -111,8 +111,12 @@ public class Pop3Agent {
             folder.fetch(messages, fp);
 
             MessageFormatter formatter = new MessageFormatter(userid);  //3.5
-            result = formatter.getMessageTable(messages);   // 3.6
-
+            if(n==0){//전체 출력
+                result = formatter.getMessageTable(messages,0);   // 3.6
+            }
+            else if (n==1){ // 내게 쓴 메일함
+                result = formatter.getMessageTable(messages,1); 
+            }
             folder.close(true);  // 3.7
             store.close();       // 3.8
         } catch (Exception ex) {
@@ -153,8 +157,8 @@ public class Pop3Agent {
             return result;
         }
     }
-     
-    public String getmeMessageList() {
+    
+    public String getSearchList(String chk_info, String searchWord) {
         String result = "";
         Message[] messages = null;
 
@@ -176,8 +180,8 @@ public class Pop3Agent {
             folder.fetch(messages, fp);
 
             MessageFormatter formatter = new MessageFormatter(userid);  //3.5
-            result = formatter.getmeMessageTable(messages);   // 3.6
-
+            result = formatter.getMessageTable(messages,chk_info, searchWord);
+            
             folder.close(true);  // 3.7
             store.close();       // 3.8
         } catch (Exception ex) {
