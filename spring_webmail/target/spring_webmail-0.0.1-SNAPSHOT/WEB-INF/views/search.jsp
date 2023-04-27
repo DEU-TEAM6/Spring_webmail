@@ -50,7 +50,7 @@
                 </form>
             </center> 
             <br>
-            ${messageList}
+            ${searchList}
         </div>
 
         <%@include file="footer.jspf"%>

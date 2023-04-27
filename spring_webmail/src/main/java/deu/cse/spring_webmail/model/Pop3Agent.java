@@ -111,10 +111,10 @@ public class Pop3Agent {
             folder.fetch(messages, fp);
 
             MessageFormatter formatter = new MessageFormatter(userid);  //3.5
-            if(n==0){
+            if(n==0){//전체 출력
                 result = formatter.getMessageTable(messages,0);   // 3.6
             }
-            else if (n==1){
+            else if (n==1){ // 내게 쓴 메일함
                 result = formatter.getMessageTable(messages,1); 
             }
             folder.close(true);  // 3.7
@@ -153,6 +153,40 @@ public class Pop3Agent {
         } catch (Exception ex) {
             log.error("Pop3Agent.getMessageList() : exception = {}", ex);
             result = "Pop3Agent.getMessage() : exception = " + ex;
+        } finally {
+            return result;
+        }
+    }
+    
+    public String getSearchList(String chk_info, String searchWord) {
+        String result = "";
+        Message[] messages = null;
+
+        if (!connectToStore()) {  // 3.1
+            log.error("POP3 connection failed!");
+            return "POP3 연결이 되지 않아 메일 목록을 볼 수 없습니다.";
+        }
+
+        try {
+            // 메일 폴더 열기
+            Folder folder = store.getFolder("INBOX");  // 3.2
+            folder.open(Folder.READ_ONLY);  // 3.3
+
+            // 현재 수신한 메시지 모두 가져오기
+            messages = folder.getMessages();      // 3.4
+            FetchProfile fp = new FetchProfile();
+            // From, To, Cc, Bcc, ReplyTo, Subject & Date
+            fp.add(FetchProfile.Item.ENVELOPE);
+            folder.fetch(messages, fp);
+
+            MessageFormatter formatter = new MessageFormatter(userid);  //3.5
+            result = formatter.getMessageTable(messages,chk_info, searchWord);
+            
+            folder.close(true);  // 3.7
+            store.close();       // 3.8
+        } catch (Exception ex) {
+            log.error("Pop3Agent.getMessageList() : exception = {}", ex.getMessage());
+            result = "Pop3Agent.getMessageList() : exception = " + ex.getMessage();
         } finally {
             return result;
         }
