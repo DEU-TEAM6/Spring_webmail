@@ -6,6 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="deu.cse.spring_webmail.control.CommandType" %>
 
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 
 <html>
@@ -32,18 +33,15 @@
             <h2> 삭제할 사용자를 선택해 주세요. </h2> <br>
 
             <!-- 아래 코드는 Java Beans와 JSTL을 이용하는 코드로 바꾸어져야 함 -->
-            <%--  제어기에서 수행되어 더이상 의미없음
-                        String cwd =  this.getServletContext().getRealPath(".");
-                        UserAdminAgent agent = new UserAdminAgent("localhost", 4555, cwd);
-            --%>
+
             <form name="DeleteUser" action="delete_user.do" method="POST">
-                <%
-                    for (String userId : (java.util.List<String>) request.getAttribute("userList")) {
-                        out.print("<label><input type=checkbox name=\"selectedUsers\" "
-                            + "value=\"" + userId + "\" />");
-                        out.println(userId + "</lable> <br>");
-                    }
-                %>
+                <c:forEach items="${userList}" var="userId">
+                    <label>
+                        <input type="checkbox" name="selectedUsers" value="${userId}" />
+                        ${userId}
+                    </label>
+                    <br />
+                </c:forEach>
                 <br>
                 <input type="submit" value="제거" name="delete_command" 
                        onClick ="return getConfirmResult()"/>

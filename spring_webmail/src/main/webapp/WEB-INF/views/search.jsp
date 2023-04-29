@@ -1,7 +1,7 @@
 <%-- 
-    Document   : main_menu
-    Created on : 2022. 6. 10., 오후 3:15:45
-    Author     : skylo
+    Document   : search
+    Created on : 2023.04.28
+    Author     : Jung-HyeonSu
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
