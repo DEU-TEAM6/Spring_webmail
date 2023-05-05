@@ -5,6 +5,8 @@
 package deu.cse.spring_webmail.control;
 
 import deu.cse.spring_webmail.model.Pop3Agent;
+import deu.cse.spring_webmail.model.TrashCanManager;
+import deu.cse.spring_webmail.model.loadDB;
 import jakarta.mail.internet.MimeUtility;
 import java.io.File;
 import java.io.IOException;
@@ -53,13 +55,13 @@ public class ReadController {
     @GetMapping("/show_message")
     public String showMessage(@RequestParam Integer msgid, Model model) {
         log.debug("download_folder = {}", DOWNLOAD_FOLDER);
-        
+
         Pop3Agent pop3 = new Pop3Agent();
         pop3.setHost((String) session.getAttribute("host"));
         pop3.setUserid((String) session.getAttribute("userid"));
         pop3.setPassword((String) session.getAttribute("password"));
         pop3.setRequest(request);
-        
+
         String msg = pop3.getMessage(msgid);
         session.setAttribute("sender", pop3.getSender());  // 220612 LJM - added
         session.setAttribute("subject", pop3.getSubject());
@@ -67,7 +69,7 @@ public class ReadController {
         model.addAttribute("msg", msg);
         return "/read_mail/show_message";
     }
-    
+
     @GetMapping("/download")
     public ResponseEntity<Resource> download(@RequestParam("userid") String userId,
             @RequestParam("filename") String fileName) {
@@ -77,7 +79,7 @@ public class ReadController {
         } catch (UnsupportedEncodingException ex) {
             log.error("error");
         }
-        
+
         // 1. 내려받기할 파일의 기본 경로 설정
         String basePath = ctx.getRealPath(DOWNLOAD_FOLDER) + File.separator + userId;
 
@@ -110,23 +112,51 @@ public class ReadController {
 
         return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
     }
-    
+
     @GetMapping("/delete_mail.do")
     public String deleteMailDo(@RequestParam("msgid") Integer msgId, RedirectAttributes attrs) {
         log.debug("delete_mail.do: msgid = {}", msgId);
-        
+
         String host = (String) session.getAttribute("host");
         String userid = (String) session.getAttribute("userid");
         String password = (String) session.getAttribute("password");
-
         Pop3Agent pop3 = new Pop3Agent(host, userid, password);
         boolean deleteSuccessful = pop3.deleteMessage(msgId, true);
+
         if (deleteSuccessful) {
             attrs.addFlashAttribute("msg", "메시지 삭제를 성공하였습니다.");
         } else {
             attrs.addFlashAttribute("msg", "메시지 삭제를 실패하였습니다.");
         }
-        
+
+        return "redirect:main_menu";
+    }
+
+    @GetMapping("/trashcan_mail.do")
+    public String trashcanMailDo(@RequestParam("message_name") String message_name, @RequestParam("type") String type, RedirectAttributes attrs) {
+        log.debug("restore_mail.do: message_name = {}", message_name);
+
+        String url = loadDB.getInstance().getUrl();
+        String id = loadDB.getInstance().getId();
+        String pw = loadDB.getInstance().getPw();
+        String driver = loadDB.getInstance().getDriver();
+        TrashCanManager manager = new TrashCanManager(url, id, pw, driver);
+        if (type.equals("restore")) { // 복원
+            manager.insertRow(message_name);
+            boolean restoreSuccessful = manager.deleteRow(message_name);
+            if (restoreSuccessful) {
+                attrs.addFlashAttribute("msg", "메시지 복원을 성공하였습니다.");
+            } else {
+                attrs.addFlashAttribute("msg", "메시지 복원을 실패하였습니다.");
+            }
+        } else if (type.equals("delete")) { // 영구 삭제
+            boolean deleteSuccessful = manager.deleteRow(message_name);
+            if (deleteSuccessful) {
+                attrs.addFlashAttribute("msg", "메시지 삭제를 성공하였습니다.");
+            } else {
+                attrs.addFlashAttribute("msg", "메시지 삭제를 실패하였습니다.");
+            }
+        }
         return "redirect:main_menu";
     }
 }

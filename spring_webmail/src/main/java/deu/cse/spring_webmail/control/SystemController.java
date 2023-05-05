@@ -5,7 +5,10 @@
 package deu.cse.spring_webmail.control;
 
 import deu.cse.spring_webmail.model.Pop3Agent;
+import deu.cse.spring_webmail.model.TrashCanManager;
+import deu.cse.spring_webmail.model.TrashCanRow;
 import deu.cse.spring_webmail.model.UserAdminAgent;
+import deu.cse.spring_webmail.model.loadDB;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -140,6 +143,20 @@ public class SystemController {
         return "main_menu";
     }
 
+    @GetMapping("/trash_can")
+    public String trash_can(Model model) {
+        String userid = (String) session.getAttribute("userid");
+        
+        String url = loadDB.getInstance().getUrl();
+        String id = loadDB.getInstance().getId();
+        String pw = loadDB.getInstance().getPw();
+        String driver = loadDB.getInstance().getDriver();
+        TrashCanManager manager = new TrashCanManager(url, id, pw, driver);
+         List<TrashCanRow> dataRows = manager.getAllRows(userid);
+        model.addAttribute("trashcanList", dataRows);
+        return "trash_can";
+    }
+
     @GetMapping("/admin_menu")
     public String adminMenu(Model model) {
         log.debug("root.id = {}, root.password = {}, admin.id = {}",
@@ -217,7 +234,7 @@ public class SystemController {
     public String changePwDo(@RequestParam String id, @RequestParam String oldpassword, @RequestParam String password, RedirectAttributes attrs) {
         String path = "";
         String sessionPW = (String) session.getAttribute("password");
-        
+
         log.debug("register.do: id = {}, password = {}, port = {}",
                 id, password, JAMES_CONTROL_PORT);
         try {
@@ -238,9 +255,9 @@ public class SystemController {
         } catch (Exception ex) {
             log.error("changePw.do : 예외 = {}", ex);
         }
-         return "redirect:/" + path;
+        return "redirect:/" + path;
     }
-    
+
     @PostMapping("/search")
     public String search(Model model, @RequestParam String chk_info, @RequestParam String searchWord) {
         Pop3Agent pop3 = new Pop3Agent();
@@ -251,8 +268,8 @@ public class SystemController {
         String searchList = pop3.getSearchList(chk_info, searchWord);
         System.out.println(chk_info);
         model.addAttribute("searchList", searchList);
-        model.addAttribute("chk_info",chk_info);
-        model.addAttribute("searchWord",searchWord);
+        model.addAttribute("chk_info", chk_info);
+        model.addAttribute("searchWord", searchWord);
         return "search";
     }
 
@@ -308,7 +325,7 @@ public class SystemController {
         pop3.setHost((String) session.getAttribute("host"));
         pop3.setUserid((String) session.getAttribute("userid"));
         pop3.setPassword((String) session.getAttribute("password"));
-        
+
         String meMessageList = pop3.getMessageList(1);
         model.addAttribute("meMessageList", meMessageList);
         return "me_mail_menu";

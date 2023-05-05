@@ -6,11 +6,20 @@ package deu.cse.spring_webmail.model;
 
 import jakarta.mail.FetchProfile;
 import jakarta.mail.Flags;
+import jakarta.mail.Flags.Flag;
 import jakarta.mail.Folder;
 import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.Store;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,24 +33,40 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @NoArgsConstructor        // 기본 생성자 생성
 public class Pop3Agent {
-    @Getter @Setter private String host;
-    @Getter @Setter private String userid;
-    @Getter @Setter private String password;
-    @Getter @Setter private Store store;
-    @Getter @Setter private String excveptionType;
-    @Getter @Setter private HttpServletRequest request;
-    
+
+    @Getter
+    @Setter
+    private String host;
+    @Getter
+    @Setter
+    private String userid;
+    @Getter
+    @Setter
+    private String password;
+    @Getter
+    @Setter
+    private Store store;
+    @Getter
+    @Setter
+    private String excveptionType;
+    @Getter
+    @Setter
+    private HttpServletRequest request;
+
     // 220612 LJM - added to implement REPLY
-    @Getter private String sender;
-    @Getter private String subject;
-    @Getter private String body;
-    
+    @Getter
+    private String sender;
+    @Getter
+    private String subject;
+    @Getter
+    private String body;
+
     public Pop3Agent(String host, String userid, String password) {
         this.host = host;
         this.userid = userid;
         this.password = password;
     }
-    
+
     public boolean validate() {
         boolean status = false;
 
@@ -62,7 +87,6 @@ public class Pop3Agent {
         if (!connectToStore()) {
             return status;
         }
-
         try {
             // Folder 설정
 //            Folder folder = store.getDefaultFolder();
@@ -81,15 +105,16 @@ public class Pop3Agent {
             status = true;
         } catch (Exception ex) {
             log.error("deleteMessage() error: {}", ex.getMessage());
-        } finally {
-            return status;
         }
+
+        return status;
     }
+
 
     /*
      * 페이지 단위로 메일 목록을 보여주어야 함.
      */
-    public String getMessageList(int n) {
+    public String getMessageList(int n) { // n = 0 메일 읽기, n = 1 내게 쓴 메일함, n = 2 휴지통
         String result = "";
         Message[] messages = null;
 
@@ -97,10 +122,8 @@ public class Pop3Agent {
             log.error("POP3 connection failed!");
             return "POP3 연결이 되지 않아 메일 목록을 볼 수 없습니다.";
         }
-
         try {
-            // 메일 폴더 열기
-            Folder folder = store.getFolder("INBOX");  // 3.2
+            Folder folder = store.getFolder("INBOX");
             folder.open(Folder.READ_ONLY);  // 3.3
 
             // 현재 수신한 메시지 모두 가져오기
@@ -111,21 +134,21 @@ public class Pop3Agent {
             folder.fetch(messages, fp);
 
             MessageFormatter formatter = new MessageFormatter(userid);  //3.5
-            if(n==0){//전체 출력
-                result = formatter.getMessageTable(messages,0);   // 3.6
-            }
-            else if (n==1){ // 내게 쓴 메일함
-                result = formatter.getMessageTable(messages,1); 
+            if (n == 0) {//전체 출력
+                result = formatter.getMessageTable(messages, 0);   // 3.6
+            } else if (n == 1) { // 내게 쓴 메일함
+                result = formatter.getMessageTable(messages, 1);
             }
             folder.close(true);  // 3.7
             store.close();       // 3.8
+            return result;
         } catch (Exception ex) {
             log.error("Pop3Agent.getMessageList() : exception = {}", ex.getMessage());
             result = "Pop3Agent.getMessageList() : exception = " + ex.getMessage();
-        } finally {
             return result;
         }
     }
+
 
     public String getMessage(int n) {
         String result = "POP3  서버 연결이 되지 않아 메시지를 볼 수 없습니다.";
@@ -157,7 +180,7 @@ public class Pop3Agent {
             return result;
         }
     }
-    
+
     public String getSearchList(String chk_info, String searchWord) {
         String result = "";
         Message[] messages = null;
@@ -180,8 +203,8 @@ public class Pop3Agent {
             folder.fetch(messages, fp);
 
             MessageFormatter formatter = new MessageFormatter(userid);  //3.5
-            result = formatter.getMessageTable(messages,chk_info, searchWord);
-            
+            result = formatter.getMessageTable(messages, chk_info, searchWord);
+
             folder.close(true);  // 3.7
             store.close();       // 3.8
         } catch (Exception ex) {
@@ -216,5 +239,5 @@ public class Pop3Agent {
             return status;
         }
     }
-    
+
 }
