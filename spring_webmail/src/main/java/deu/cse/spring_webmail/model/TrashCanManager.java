@@ -48,38 +48,37 @@ public class TrashCanManager {
     public List<TrashCanRow> getAllRows(String userid) {
         List<TrashCanRow> dataList = new ArrayList<>();
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
 
         try {
             Class.forName(driver);
             conn = DriverManager.getConnection(url, id, pw);
-            stmt = conn.createStatement();
-            String sql = "SELECT * FROM TRASHCAN";
-            rs = stmt.executeQuery(sql);
+            String sql = "SELECT * FROM TRASHCAN WHERE REPOSITORY_NAME = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, userid);
+            rs = pstmt.executeQuery();
             while (rs.next()) {
-                if (userid.equals(rs.getString("repository_name"))) {
-                    String message_name = rs.getString("message_name");
-                    String repository_name = rs.getString("repository_name");
-                    String message_state = rs.getString("message_state");
-                    String error_message = rs.getString("error_message");
-                    String sender = rs.getString("sender");
-                    sender = sender.substring(0, sender.indexOf("@"));
-                    String recipients = rs.getString("recipients");
-                    String remote_host = rs.getString("remote_host");
-                    String remote_addr = rs.getString("remote_addr");
-                    Blob message_body = rs.getBlob("message_body");
-                    Blob message_attributes = rs.getBlob("message_attributes");
-                    Date last_updated = rs.getDate("last_updated");
-                    dataList.add(new TrashCanRow(message_name, repository_name, message_state, error_message, sender, recipients,
-                            remote_host, remote_addr, message_body, message_attributes, last_updated));
-                }
+                String message_name = rs.getString("message_name");
+                String repository_name = rs.getString("repository_name");
+                String message_state = rs.getString("message_state");
+                String error_message = rs.getString("error_message");
+                String sender = rs.getString("sender");
+                sender = sender.substring(0, sender.indexOf("@"));
+                String recipients = rs.getString("recipients");
+                String remote_host = rs.getString("remote_host");
+                String remote_addr = rs.getString("remote_addr");
+                Blob message_body = rs.getBlob("message_body");
+                Blob message_attributes = rs.getBlob("message_attributes");
+                Date last_updated = rs.getDate("last_updated");
+                dataList.add(new TrashCanRow(message_name, repository_name, message_state, error_message, sender, recipients,
+                        remote_host, remote_addr, message_body, message_attributes, last_updated));
             }
             if (rs != null) {
                 rs.close();
             }
-            if (stmt != null) {
-                stmt.close();
+            if (pstmt != null) {
+                pstmt.close();
             }
             if (conn != null) {
                 conn.close();
@@ -125,7 +124,6 @@ public class TrashCanManager {
         boolean result = false;
         Connection conn = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
         List<Object> rowList = selectRow(message_name);
         try {
             Class.forName(driver);
@@ -161,10 +159,6 @@ public class TrashCanManager {
                 }
             }
             pstmt.executeUpdate();
-
-            if (rs != null) {
-                rs.close();
-            }
             if (pstmt != null) {
                 pstmt.close();
             }
@@ -181,18 +175,18 @@ public class TrashCanManager {
 
     public List<Object> selectRow(String message_name) {
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
         List<Object> row = new ArrayList<>();
         try {
             Class.forName(driver);
             conn = DriverManager.getConnection(url, id, pw);
-            String sql = "SELECT * FROM TRASHCAN";
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
+            String sql = "SELECT * FROM TRASHCAN WHERE MESSAGE_NAME = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, message_name);
+            rs = pstmt.executeQuery();
             while (rs.next()) {
-                if (message_name.equals(rs.getString("message_name"))) {
-                    row.add(rs.getString("message_name"));
+                row.add(rs.getString("message_name"));
                     row.add(rs.getString("repository_name"));
                     row.add(rs.getString("message_state"));
                     row.add(rs.getString("error_message"));
@@ -203,13 +197,12 @@ public class TrashCanManager {
                     row.add(rs.getBlob("message_body"));
                     row.add(rs.getBlob("message_attributes"));
                     row.add(rs.getDate("last_updated"));
-                }
             }
             if (rs != null) {
                 rs.close();
             }
-            if (stmt != null) {
-                stmt.close();
+            if (pstmt != null) {
+                pstmt.close();
             }
             if (conn != null) {
                 conn.close();
