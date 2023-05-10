@@ -12,7 +12,7 @@
     <artifactId>spring_webmail</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>spring_webmail</name>
+    <name>spring_webmail(ff)</name>
     <description>객체지향설계 Webmail Using Spring Boot</description>
     <properties>
         <java.version>11</java.version>
