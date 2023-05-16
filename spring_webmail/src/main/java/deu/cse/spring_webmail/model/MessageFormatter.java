@@ -5,11 +5,13 @@
 package deu.cse.spring_webmail.model;
 
 import jakarta.mail.Message;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
 
 /**
  *
@@ -33,7 +35,18 @@ public class MessageFormatter {
 
     public String getMessageTable(Message[] messages, int n) {
         StringBuilder buffer = new StringBuilder();
-
+        String url = loadDB.getInstance().getUrl();
+        String id = loadDB.getInstance().getId();
+        String pw = loadDB.getInstance().getPw();
+        String driver = loadDB.getInstance().getDriver();
+        Addkeyword addkey = new Addkeyword(url, id, pw, driver);
+        List<AddkeywordRow> keyword = addkey.getAllRows(userid);
+        List<String> keywordStrings = new ArrayList<>();
+        for (AddkeywordRow row : keyword) {
+            // AddkeywordRow 객체의 필드를 사용하여 원하는 문자열 표현 생성
+            keywordStrings.add(row.getKeyword());
+        }
+        String joinedKeywords = String.join(" ", keywordStrings);
         // 메시지 제목 보여주기
         buffer.append("<table>");  // table start
         buffer.append("<tr> "
@@ -45,11 +58,18 @@ public class MessageFormatter {
                 + " </tr>");
 
         for (int i = messages.length - 1; i >= 0; i--) {
+
             MessageParser parser = new MessageParser(messages[i], userid);
             parser.parse(false);  // envelope 정보만 필요
+            boolean check = false;
             // 메시지 헤더 포맷
             // 추출한 정보를 출력 포맷 사용하여 스트링으로 만들기
-            if (n == 0) { // 모두
+            for (int j = 0; j < keywordStrings.size(); j++) {
+                if (parser.getSubject().contains(keywordStrings.get(j))) {// || parser.getBody().contains(keywordStrings.get(j))
+                    check = true;
+                }
+            }
+            if (n == 0 && check == false) { // 모두
                 buffer.append("<tr> "
                         + " <td id=no>" + (i + 1) + " </td> "
                         + " <td id=sender>" + parser.getFromAddress() + "</td>"
@@ -65,7 +85,7 @@ public class MessageFormatter {
                 if (parser.getFromAddress().equals(userid)) {
                     buffer.append("<tr> "
                             + " <td id=no>" + (i + 1) + " </td> "
-                            + " <td id=sender>" + parser.getFromAddress() + "</td>" //이걸 아이디랑 비교해서 갖고오기
+                            + " <td id=sender>" + parser.getFromAddress() + "</td>"
                             + " <td id=subject> "
                             + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
                             + parser.getSubject() + "</a> </td>"
@@ -74,6 +94,22 @@ public class MessageFormatter {
                             + "<a href=delete_mail.do"
                             + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
                             + " </tr>");
+                }
+            } else if (n == 2) { //스팸메일함
+                if (parser.getFromAddress().equals(userid) == false) { //parser.getSubject().contains(joinedKeywords)
+                    if (check) {
+                        buffer.append("<tr> "
+                                + " <td id=no>" + (i + 1) + " </td> "
+                                + " <td id=sender>" + parser.getFromAddress() + "</td>"
+                                + " <td id=subject> "
+                                + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
+                                + parser.getSubject() + "</a> </td>"
+                                + " <td id=date>" + parser.getSentDate() + "</td>"
+                                + " <td id=delete>"
+                                + "<a href=delete_mail.do"
+                                + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
+                                + " </tr>");
+                    }
                 }
             }
 
@@ -96,41 +132,40 @@ public class MessageFormatter {
                 + " <th> 보낸 날짜 </td>   "
                 + " <th> 삭제 </td>   "
                 + " </tr>");
-     
+
         for (int i = messages.length - 1; i >= 0; i--) {
             MessageParser parser = new MessageParser(messages[i], userid);
             parser.parse(false);  // envelope 정보만 필요
             // 메시지 헤더 포맷
             // 추출한 정보를 출력 포맷 사용하여 스트링으로 만들기
-            
-            if(chk_info.equals("human")){ // 보낸 사람을 선택한 경우
-                if(parser.getFromAddress().contains(searchWord)){ // 검색한 단어가 제목에 포함된 경우
+
+            if (chk_info.equals("human")) { // 보낸 사람을 선택한 경우
+                if (parser.getFromAddress().contains(searchWord)) { // 검색한 단어가 제목에 포함된 경우
                     buffer.append("<tr> "
-                        + " <td id=no>" + (i + 1) + " </td> "
-                        + " <td id=sender>" + parser.getFromAddress() + "</td>" 
-                        + " <td id=subject> "
-                        + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
-                        + parser.getSubject() + "</a> </td>"
-                        + " <td id=date>" + parser.getSentDate() + "</td>"
-                        + " <td id=delete>"
-                        + "<a href=delete_mail.do"
-                        + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
-                        + " </tr>");
+                            + " <td id=no>" + (i + 1) + " </td> "
+                            + " <td id=sender>" + parser.getFromAddress() + "</td>"
+                            + " <td id=subject> "
+                            + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
+                            + parser.getSubject() + "</a> </td>"
+                            + " <td id=date>" + parser.getSentDate() + "</td>"
+                            + " <td id=delete>"
+                            + "<a href=delete_mail.do"
+                            + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
+                            + " </tr>");
                 }
-            }
-            else { // 제목을 선택한 경우
-                if(parser.getSubject().contains(searchWord)){ // 검색한 단어가 제목에 포함된 경우
+            } else { // 제목을 선택한 경우
+                if (parser.getSubject().contains(searchWord)) { // 검색한 단어가 제목에 포함된 경우
                     buffer.append("<tr> "
-                        + " <td id=no>" + (i + 1) + " </td> "
-                        + " <td id=sender>" + parser.getFromAddress() + "</td>"
-                        + " <td id=subject> "
-                        + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
-                        + parser.getSubject() + "</a> </td>"
-                        + " <td id=date>" + parser.getSentDate() + "</td>"
-                        + " <td id=delete>"
-                        + "<a href=delete_mail.do"
-                        + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
-                        + " </tr>");
+                            + " <td id=no>" + (i + 1) + " </td> "
+                            + " <td id=sender>" + parser.getFromAddress() + "</td>"
+                            + " <td id=subject> "
+                            + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
+                            + parser.getSubject() + "</a> </td>"
+                            + " <td id=date>" + parser.getSentDate() + "</td>"
+                            + " <td id=delete>"
+                            + "<a href=delete_mail.do"
+                            + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
+                            + " </tr>");
                 }
             }
 
