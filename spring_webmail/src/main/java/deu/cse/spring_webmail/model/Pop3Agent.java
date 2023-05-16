@@ -138,6 +138,8 @@ public class Pop3Agent {
                 result = formatter.getMessageTable(messages, 0);   // 3.6
             } else if (n == 1) { // 내게 쓴 메일함
                 result = formatter.getMessageTable(messages, 1);
+            } else if (n == 2) {//스팸 메일함
+                result = formatter.getMessageTable(messages, 2);
             }
             folder.close(true);  // 3.7
             store.close();       // 3.8
@@ -148,7 +150,6 @@ public class Pop3Agent {
             return result;
         }
     }
-
 
     public String getMessage(int n) {
         String result = "POP3  서버 연결이 되지 않아 메시지를 볼 수 없습니다.";

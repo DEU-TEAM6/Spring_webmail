@@ -4,6 +4,8 @@
  */
 package deu.cse.spring_webmail.control;
 
+import deu.cse.spring_webmail.model.Addkeyword;
+import deu.cse.spring_webmail.model.AddkeywordRow;
 import deu.cse.spring_webmail.model.Pop3Agent;
 import deu.cse.spring_webmail.model.TrashCanManager;
 import deu.cse.spring_webmail.model.TrashCanRow;
@@ -13,7 +15,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import static java.lang.System.out;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
@@ -146,13 +147,13 @@ public class SystemController {
     @GetMapping("/trash_can")
     public String trash_can(Model model) {
         String userid = (String) session.getAttribute("userid");
-        
+
         String url = loadDB.getInstance().getUrl();
         String id = loadDB.getInstance().getId();
         String pw = loadDB.getInstance().getPw();
         String driver = loadDB.getInstance().getDriver();
         TrashCanManager manager = new TrashCanManager(url, id, pw, driver);
-         List<TrashCanRow> dataRows = manager.getAllRows(userid);
+        List<TrashCanRow> dataRows = manager.getAllRows(userid);
         model.addAttribute("trashcanList", dataRows);
         return "trash_can";
     }
@@ -271,6 +272,55 @@ public class SystemController {
         model.addAttribute("chk_info", chk_info);
         model.addAttribute("searchWord", searchWord);
         return "search";
+    }
+
+    @GetMapping("/spam_mail")
+    public String spam_mail(Model model) {
+        Pop3Agent pop3 = new Pop3Agent();
+        pop3.setHost((String) session.getAttribute("host"));
+        pop3.setUserid((String) session.getAttribute("userid"));
+        pop3.setPassword((String) session.getAttribute("password"));
+
+        String messageList = pop3.getMessageList(2);
+        model.addAttribute("messageList", messageList);
+        return "spam_mail";
+    }
+
+    @GetMapping("/insertkeyword")
+    public String insertkeyword(Model model) { // 스팸 키워드 목록 보여주기
+        String userid = (String) session.getAttribute("userid");
+        String url = loadDB.getInstance().getUrl();
+        String id = loadDB.getInstance().getId();
+        String pw = loadDB.getInstance().getPw();
+        String driver = loadDB.getInstance().getDriver();
+        Addkeyword addkey = new Addkeyword(url, id, pw, driver); //List<Addkeyword> getAllRows(String userid)
+        List<AddkeywordRow> dataList = addkey.getAllRows(userid);
+        model.addAttribute("keywordlist", dataList);
+        return "insertkeyword";
+    }
+
+    @PostMapping("/addkeyword.do")
+    public String addkeyword(Model model, @RequestParam String keyword) { //스팸 키워드 추가하기
+        String userid = (String) session.getAttribute("userid");
+        String url = loadDB.getInstance().getUrl();
+        String id = loadDB.getInstance().getId();
+        String pw = loadDB.getInstance().getPw();
+        String driver = loadDB.getInstance().getDriver();
+        Addkeyword addkey = new Addkeyword(url, id, pw, driver);
+        addkey.insertkeyword(userid, keyword);
+        return "redirect:/insertkeyword";
+    }
+
+    @GetMapping("/deletekeyword.do")
+    public String deletekeyword(Model model, @RequestParam("keyword") String keyword) { // 스팸 키워드 지우기
+        String userid = (String) session.getAttribute("userid");
+        String url = loadDB.getInstance().getUrl();
+        String id = loadDB.getInstance().getId();
+        String pw = loadDB.getInstance().getPw();
+        String driver = loadDB.getInstance().getDriver();
+        Addkeyword addkey = new Addkeyword(url, id, pw, driver); //List<Addkeyword> getAllRows(String userid)
+        addkey.deletekeyword(userid, keyword);
+        return "redirect:/insertkeyword";
     }
 
     @GetMapping("/delete_user")
