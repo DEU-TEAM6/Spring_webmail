@@ -124,7 +124,7 @@ public class ReadController {
         boolean deleteSuccessful = pop3.deleteMessage(msgId, true);
 
         if (deleteSuccessful) {
-            attrs.addFlashAttribute("msg", "메시지 삭제를 성공하였습니다.");
+            attrs.addFlashAttribute("msg", "휴지통으로 이동되었습니다.");
         } else {
             attrs.addFlashAttribute("msg", "메시지 삭제를 실패하였습니다.");
         }

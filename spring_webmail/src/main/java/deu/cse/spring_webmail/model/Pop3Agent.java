@@ -114,7 +114,7 @@ public class Pop3Agent {
     /*
      * 페이지 단위로 메일 목록을 보여주어야 함.
      */
-    public String getMessageList(int n) { // n = 0 메일 읽기, n = 1 내게 쓴 메일함, n = 2 휴지통
+    public String getMessageList(int n, int currentpage) { // n = 0 메일 읽기, n = 1 내게 쓴 메일함, n = 2 휴지통
         String result = "";
         Message[] messages = null;
 
@@ -134,12 +134,33 @@ public class Pop3Agent {
             folder.fetch(messages, fp);
 
             MessageFormatter formatter = new MessageFormatter(userid);  //3.5
+            Paging paging = new Paging();
+            paging.setTotalmail(messages.length);
+            paging.setCurrentpage(currentpage);
+            int startmail = (paging.getTotalmail() - (currentpage * paging.getPostmail()));
+            int endmail = paging.getTotalmail()  - ((currentpage - 1) * paging.getPostmail());
+
             if (n == 0) {//전체 출력
-                result = formatter.getMessageTable(messages, 0);   // 3.6
+                if (messages.length < paging.getPostmail()) {
+                    result = formatter.getMessageTable(messages, 0, startmail, messages.length);
+                } else {
+                    result = formatter.getMessageTable(messages, 0, startmail, endmail);   // 3.6
+                }
+                result = result + paging.pagination();
             } else if (n == 1) { // 내게 쓴 메일함
-                result = formatter.getMessageTable(messages, 1);
+                if (messages.length < paging.getPostmail()) {
+                    result = formatter.getMessageTable(messages, 1, startmail, messages.length);
+                } else {
+                    result = formatter.getMessageTable(messages, 1, startmail, endmail);   // 3.6
+                }
+                result = result + paging.pagination();
             } else if (n == 2) {//스팸 메일함
-                result = formatter.getMessageTable(messages, 2);
+                if (messages.length < paging.getPostmail()) {
+                    result = formatter.getMessageTable(messages, 2, startmail, messages.length);
+                } else {
+                    result = formatter.getMessageTable(messages, 2, startmail, endmail);   // 3.6
+                }
+                result = result + paging.pagination();
             }
             folder.close(true);  // 3.7
             store.close();       // 3.8

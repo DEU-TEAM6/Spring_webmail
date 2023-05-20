@@ -33,7 +33,7 @@ public class MessageFormatter {
     @Getter
     private String body;
 
-    public String getMessageTable(Message[] messages, int n) {
+    public String getMessageTable(Message[] messages, int n, int startIndex, int endIndex) {
         StringBuilder buffer = new StringBuilder();
         String url = loadDB.getInstance().getUrl();
         String id = loadDB.getInstance().getId();
@@ -58,7 +58,7 @@ public class MessageFormatter {
                 + " <th> 삭제 </td>   "
                 + " </tr>");
 
-        for (int i = messages.length - 1; i >= 0; i--) {
+        for (int i = endIndex - 1; i >= startIndex; i--) {
 
             MessageParser parser = new MessageParser(messages[i], userid);
             parser.parse(false);  // envelope 정보만 필요
