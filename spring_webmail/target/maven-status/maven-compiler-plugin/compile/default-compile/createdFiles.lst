@@ -3,7 +3,6 @@ deu\cse\spring_webmail\model\TrashCanManager.class
 deu\cse\spring_webmail\ServletInitializer.class
 deu\cse\spring_webmail\PropertyReader.class
 deu\cse\spring_webmail\model\MessageParser.class
-deu\cse\spring_webmail\control\SystemController.class
 deu\cse\spring_webmail\model\loadDB.class
 deu\cse\spring_webmail\model\MessageFormatter.class
 deu\cse\spring_webmail\model\SmtpAgent.class

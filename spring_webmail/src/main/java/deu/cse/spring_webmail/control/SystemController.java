@@ -133,13 +133,13 @@ public class SystemController {
     }
 
     @GetMapping("/main_menu")
-    public String mainmenu(Model model) {
+    public String mainmenu(Model model, @RequestParam(defaultValue = "1") Integer currentpage) {
         Pop3Agent pop3 = new Pop3Agent();
         pop3.setHost((String) session.getAttribute("host"));
         pop3.setUserid((String) session.getAttribute("userid"));
         pop3.setPassword((String) session.getAttribute("password"));
 
-        String messageList = pop3.getMessageList(0);
+        String messageList = pop3.getMessageList(0, currentpage);
         model.addAttribute("messageList", messageList);
         return "main_menu";
     }
@@ -275,13 +275,13 @@ public class SystemController {
     }
 
     @GetMapping("/spam_mail")
-    public String spam_mail(Model model) {
+    public String spam_mail(Model model, @RequestParam(defaultValue = "1") Integer currentpage) {
         Pop3Agent pop3 = new Pop3Agent();
         pop3.setHost((String) session.getAttribute("host"));
         pop3.setUserid((String) session.getAttribute("userid"));
         pop3.setPassword((String) session.getAttribute("password"));
 
-        String messageList = pop3.getMessageList(2);
+        String messageList = pop3.getMessageList(2, currentpage);
         model.addAttribute("messageList", messageList);
         return "spam_mail";
     }
@@ -370,13 +370,13 @@ public class SystemController {
     }
 
     @GetMapping("/me_mail_menu")
-    public String me_mail_menu(Model model) {
+    public String me_mail_menu(Model model,@RequestParam(defaultValue = "1") Integer currentpage) {
         Pop3Agent pop3 = new Pop3Agent();
         pop3.setHost((String) session.getAttribute("host"));
         pop3.setUserid((String) session.getAttribute("userid"));
         pop3.setPassword((String) session.getAttribute("password"));
 
-        String meMessageList = pop3.getMessageList(1);
+        String meMessageList = pop3.getMessageList(1, currentpage);
         model.addAttribute("meMessageList", meMessageList);
         return "me_mail_menu";
     }
