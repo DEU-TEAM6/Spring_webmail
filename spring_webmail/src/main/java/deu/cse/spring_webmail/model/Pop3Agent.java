@@ -137,9 +137,13 @@ public class Pop3Agent {
             Paging paging = new Paging();
             paging.setTotalmail(messages.length);
             paging.setCurrentpage(currentpage);
-            int startmail = (paging.getTotalmail() - (currentpage * paging.getPostmail()));
+            int startmail = paging.getTotalmail() - (currentpage * paging.getPostmail());
             int endmail = paging.getTotalmail()  - ((currentpage - 1) * paging.getPostmail());
-
+            if(startmail<0){
+                startmail = 0;
+            }
+            System.out.println("시작"+startmail);
+            System.out.println("끝"+endmail);
             if (n == 0) {//전체 출력
                 if (messages.length < paging.getPostmail()) {
                     result = formatter.getMessageTable(messages, 0, startmail, messages.length);

@@ -1,4 +1,3 @@
-
 C:\Users\gustn\Documents\NetBeansProjects\Spring_webmail\spring_webmail\src\main\java\deu\cse\spring_webmail\ServletInitializer.java
 C:\Users\gustn\Documents\NetBeansProjects\Spring_webmail\spring_webmail\src\main\java\deu\cse\spring_webmail\SpringWebmailApplication.java
 C:\Users\gustn\Documents\NetBeansProjects\Spring_webmail\spring_webmail\src\main\java\deu\cse\spring_webmail\control\WriteController.java
@@ -17,3 +16,5 @@ C:\Users\gustn\Documents\NetBeansProjects\Spring_webmail\spring_webmail\src\main
 C:\Users\gustn\Documents\NetBeansProjects\Spring_webmail\spring_webmail\src\main\java\deu\cse\spring_webmail\model\SmtpAgent.java
 C:\Users\gustn\Documents\NetBeansProjects\Spring_webmail\spring_webmail\src\main\java\deu\cse\spring_webmail\control\ReadController.java
 C:\Users\gustn\Documents\NetBeansProjects\Spring_webmail\spring_webmail\src\main\java\deu\cse\spring_webmail\model\AddkeywordRow.java
+C:\Users\gustn\Documents\NetBeansProjects\Spring_webmail\spring_webmail\src\main\java\deu\cse\spring_webmail\model\AddrBookRow.java
+C:\Users\gustn\Documents\NetBeansProjects\Spring_webmail\spring_webmail\src\main\java\deu\cse\spring_webmail\model\AddrBookManager.java
