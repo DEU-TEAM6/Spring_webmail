@@ -44,6 +44,7 @@
             <thead>
                 <tr>
                     <th>보낸 사람</th>
+                    <th>제목</th>
                     <th>보낸 날짜</th>
                     <th>복원</th>
                     <th>영구삭제</th>
@@ -53,6 +54,7 @@
                 <c:forEach var="row" items="${trashcanList}">
                     <tr>
                         <td>${row.sender}</td>
+                        <td>${row.title}</td>
                         <td>${row.last_updated}</td>
                         <td><a href="trashcan_mail.do?message_name=${row.message_name}&type=restore"> 복원 </a></td>
                         <td><a href="trashcan_mail.do?message_name=${row.message_name}&type=delete"> 영구삭제 </a></td>

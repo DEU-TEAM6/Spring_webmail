@@ -9,7 +9,9 @@ import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 @AllArgsConstructor
 @Builder
 public class TrashCanRow {
@@ -35,4 +37,6 @@ public class TrashCanRow {
     private Blob message_attributes;
     @Getter
     private Date last_updated;
+    @Getter
+    private String title;
 }

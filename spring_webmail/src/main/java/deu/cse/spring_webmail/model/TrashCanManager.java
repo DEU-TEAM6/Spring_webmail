@@ -4,6 +4,7 @@
  */
 package deu.cse.spring_webmail.model;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.Date;
@@ -71,8 +72,17 @@ public class TrashCanManager {
                 Blob message_body = rs.getBlob("message_body");
                 Blob message_attributes = rs.getBlob("message_attributes");
                 Date last_updated = rs.getDate("last_updated");
+                byte[] bytes = message_body.getBytes(1, (int) message_body.length());
+                
+                String input = new String(bytes, StandardCharsets.UTF_8); // Blob to String
+                String keyword = "Subject: "; // 제목 부분만 가져오기
+                int startIndex = input.indexOf(keyword) + keyword.length(); 
+                String result = input.substring(startIndex).trim();
+                String title = result.split("\n")[0]; // 제목
+
+                
                 dataList.add(new TrashCanRow(message_name, repository_name, message_state, error_message, sender, recipients,
-                        remote_host, remote_addr, message_body, message_attributes, last_updated));
+                        remote_host, remote_addr, message_body, message_attributes, last_updated, title));
             }
             if (rs != null) {
                 rs.close();
