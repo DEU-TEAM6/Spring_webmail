@@ -1,9 +1,8 @@
 <%-- 
-    Document   : insertkeyword
-    Created on : 2023. 5. 11., 오전 1:18:41
+    Document   : addrbook
+    Created on : 2023. 5. 17., 오후 2:20:40
     Author     : kkll3
 --%>
-
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -24,7 +23,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>키워드 관리</title>
+        <title>주소록 추가폼</title>
         <link type="text/css" rel="stylesheet" href="css/main_style.css" />
         <script>
             <c:if test="${!empty msg}">
@@ -43,33 +42,31 @@
 
         <!-- 메시지 삭제 링크를 누르면 바로 삭제되어 실수할 수 있음. 해결 방법은? -->
         <div id="main">
-            <center>
-                <form name="keywordForm" action="addkeyword.do" method="POST">
-                    <br>
-                    <input type="text" name="keyword" placeholder="키워드 입력">&nbsp;<input type="submit" value="키워드추가" name="addkeyword"/>
-                </form>
-            </center> 
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>키워드</th>
-                        <th>영구삭제</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="row" items="${keywordlist}">
+            <form action="insert_address.do" method="POST">
+                <table border="0">
+                    <tbody>
                         <tr>
-                            <td>${row.keyword}</td>
-                            <td><a href="deletekeyword.do?keyword=${row.keyword}&type=delete"> 영구삭제 </a></td>
+                            <td>이름</td><!-- comment -->
+                            <td><input type="text" name="name" size="20" /></td>
                         </tr>
-                    </c:forEach>
-
-                </tbody>
-            </table>
+                    <td>비고</td><!-- comment -->
+                    <td><input type="text" name="note" value="" size="20" placeholder="추가할 사용자에대한 메모를 입력해주세요."/></td><!-- comment -->
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                    <center>
+                        <input type="submit" value="추가" /> <input type="reset" value="초기화"/>
+                    </center>
+                    </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
             <br>
         </div>
 
         <%@include file="footer.jspf"%>
+
     </body>
 </html>
 

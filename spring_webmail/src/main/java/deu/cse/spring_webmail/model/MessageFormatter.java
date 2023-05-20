@@ -47,6 +47,7 @@ public class MessageFormatter {
             keywordStrings.add(row.getKeyword());
         }
         String joinedKeywords = String.join(" ", keywordStrings);
+        
         // 메시지 제목 보여주기
         buffer.append("<table>");  // table start
         buffer.append("<tr> "
@@ -65,7 +66,7 @@ public class MessageFormatter {
             // 메시지 헤더 포맷
             // 추출한 정보를 출력 포맷 사용하여 스트링으로 만들기
             for (int j = 0; j < keywordStrings.size(); j++) {
-                if (parser.getSubject().contains(keywordStrings.get(j))) {// || parser.getBody().contains(keywordStrings.get(j))
+                if (parser.getSubject().contains(keywordStrings.get(j))) {// || addkey.GetBody(userid).contains(keywordStrings.get(j))
                     check = true;
                 }
             }
@@ -170,6 +171,44 @@ public class MessageFormatter {
             }
 
         }
+        buffer.append("</table>");
+
+        return buffer.toString();
+//        return "MessageFormatter 테이블 결과";
+    }
+    
+     public String getMessageTable(Message[] messages,String adduser) {
+        StringBuilder buffer = new StringBuilder();
+        // 메시지 제목 보여주기
+        buffer.append("<table>");  // table start
+        buffer.append("<tr> "
+                + " <th> No. </td> "
+                + " <th> 보낸 사람 </td>"
+                + " <th> 제목 </td>     "
+                + " <th> 보낸 날짜 </td>   "
+                + " <th> 삭제 </td>   "
+                + " </tr>");
+System.out.println(adduser);
+        for (int i = messages.length - 1; i >= 0; i--) {
+            MessageParser parser = new MessageParser(messages[i], userid);
+            parser.parse(false);  // envelope 정보만 필요
+            // 메시지 헤더 포맷
+            // 추출한 정보를 출력 포맷 사용하여 스트링으로 만들기
+                if (parser.getFromAddress().equals(adduser)) { // 주소록에 추가한 사용자 메일만 보기
+                    buffer.append("<tr> "
+                            + " <td id=no>" + (i + 1) + " </td> "
+                            + " <td id=sender>" + parser.getFromAddress() + "</td>"
+                            + " <td id=subject> "
+                            + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
+                            + parser.getSubject() + "</a> </td>"
+                            + " <td id=date>" + parser.getSentDate() + "</td>"
+                            + " <td id=delete>"
+                            + "<a href=delete_mail.do"
+                            + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
+                            + " </tr>");
+                }
+          
+            }
         buffer.append("</table>");
 
         return buffer.toString();
