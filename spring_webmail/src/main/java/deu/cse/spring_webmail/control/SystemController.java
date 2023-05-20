@@ -11,6 +11,8 @@ import deu.cse.spring_webmail.model.TrashCanManager;
 import deu.cse.spring_webmail.model.TrashCanRow;
 import deu.cse.spring_webmail.model.UserAdminAgent;
 import deu.cse.spring_webmail.model.loadDB;
+import deu.cse.spring_webmail.model.AddrBookRow;
+import deu.cse.spring_webmail.model.AddrBookManager;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -386,6 +388,65 @@ public class SystemController {
         return "img_test/img_test";
     }
 
+    @GetMapping("/address")
+    public String address(Model model) {
+        String userid = (String) session.getAttribute("userid");
+        String url = loadDB.getInstance().getUrl();
+        String id = loadDB.getInstance().getId();
+        String pw = loadDB.getInstance().getPw();
+        String driver = loadDB.getInstance().getDriver();
+        AddrBookManager addrbook = new AddrBookManager(url, id, pw, driver);
+        List<AddrBookRow> dataList = addrbook.getAllRows(userid);
+        model.addAttribute("addrbooklist", dataList);
+        return "address";
+    }
+
+    @GetMapping("/insert_address")
+    public String insert_address() {
+        return "insert_address";
+    }
+
+    @PostMapping("insert_address.do")
+    public String insert_addressDo(Model model, @RequestParam String name, @RequestParam String note,RedirectAttributes attrs) {
+        String userid = (String) session.getAttribute("userid");
+        String url = loadDB.getInstance().getUrl();
+        String id = loadDB.getInstance().getId();
+        String pw = loadDB.getInstance().getPw();
+        String driver = loadDB.getInstance().getDriver();
+        AddrBookManager addrbook = new AddrBookManager(url, id, pw, driver);
+        boolean check = addrbook.searchuser(name);
+        if (userid.equals(name) == false && check == true) {
+            addrbook.insertaddrbook(userid, name, note);
+        } else {
+            attrs.addFlashAttribute("msg", "없는 주소록입니다.");
+        }
+        return "redirect:/address";
+    }
+
+    @GetMapping("/deleteaddress.do")
+    public String deleteaddress(Model model, @RequestParam("adduser") String adduser) { // 스팸 키워드 지우기
+        String userid = (String) session.getAttribute("userid");
+        String url = loadDB.getInstance().getUrl();
+        String id = loadDB.getInstance().getId();
+        String pw = loadDB.getInstance().getPw();
+        String driver = loadDB.getInstance().getDriver();
+        AddrBookManager addrbook = new AddrBookManager(url, id, pw, driver);
+        addrbook.deleteaddrbook(userid, adduser);
+        return "redirect:/address";
+    }
+
+    @GetMapping("/address_mail")
+    public String addressmail(Model model, @RequestParam("adduser") String adduser) { // 사용자 클릭시 메일보기
+        Pop3Agent pop3 = new Pop3Agent();
+        pop3.setHost((String) session.getAttribute("host"));
+        pop3.setUserid((String) session.getAttribute("userid"));
+        pop3.setPassword((String) session.getAttribute("password"));
+
+        String addressList = pop3.getAddressList(adduser);
+        model.addAttribute("addressList", addressList);
+        return "address_mail";
+    }
+
     /**
      * https://34codefactory.wordpress.com/2019/06/16/how-to-display-image-in-jsp-using-spring-code-factory/
      *
@@ -423,6 +484,10 @@ public class SystemController {
             log.error("getImageBytes 예외: {}", e.getMessage());
         }
         return null;
+    }
+
+    private void alert(String string) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

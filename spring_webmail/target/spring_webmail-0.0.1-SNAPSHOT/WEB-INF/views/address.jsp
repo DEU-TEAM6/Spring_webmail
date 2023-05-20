@@ -1,9 +1,8 @@
 <%-- 
-    Document   : insertkeyword
-    Created on : 2023. 5. 11., 오전 1:18:41
+    Document   : address
+    Created on : 2023. 5. 17., 오후 2:04:44
     Author     : kkll3
 --%>
-
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -24,13 +23,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>키워드 관리</title>
+        <title>주소록 화면</title>
         <link type="text/css" rel="stylesheet" href="css/main_style.css" />
         <script>
             <c:if test="${!empty msg}">
             alert("${msg}");
             </c:if>
-
         </script>
     </head>
     <body>
@@ -43,33 +41,30 @@
 
         <!-- 메시지 삭제 링크를 누르면 바로 삭제되어 실수할 수 있음. 해결 방법은? -->
         <div id="main">
-            <center>
-                <form name="keywordForm" action="addkeyword.do" method="POST">
-                    <br>
-                    <input type="text" name="keyword" placeholder="키워드 입력">&nbsp;<input type="submit" value="키워드추가" name="addkeyword"/>
-                </form>
-            </center> 
+            <input type="button" value="주소록 추가" onclick="location.href = 'insert_address'">
+            <br>
             <table border="1">
                 <thead>
                     <tr>
-                        <th>키워드</th>
-                        <th>영구삭제</th>
+                        <th>사용자</th>
+                        <th>이메일</th>
+                        <th>비고</th>
+                        <th>사용자 삭제</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="row" items="${keywordlist}">
+                    <c:forEach var="row" items="${addrbooklist}">
                         <tr>
-                            <td>${row.keyword}</td>
-                            <td><a href="deletekeyword.do?keyword=${row.keyword}&type=delete"> 영구삭제 </a></td>
+                            <td><a href="address_mail?adduser=${row.username}&type=show">${row.username}</a></td>
+                            <td>${row.username}@loacal.host</td>
+                             <td>${row.note}</td>
+                            <td><a href="deleteaddress.do?adduser=${row.username}&type=delete"> 영구삭제 </a></td>
                         </tr>
                     </c:forEach>
 
                 </tbody>
             </table>
-            <br>
         </div>
-
         <%@include file="footer.jspf"%>
     </body>
 </html>
-

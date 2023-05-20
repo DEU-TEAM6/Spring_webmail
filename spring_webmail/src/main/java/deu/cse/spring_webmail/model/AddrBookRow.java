@@ -4,8 +4,6 @@
  */
 package deu.cse.spring_webmail.model;
 
-
-import java.sql.Blob;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,9 +14,12 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Builder
-public class AddkeywordRow {
-    @Getter 
-    private String keyword;
+public class AddrBookRow {
+
+    @Getter
+    private String userid;
     @Getter
     private String username;
+    @Getter
+    private String note;
 }
