@@ -114,7 +114,7 @@ public class Pop3Agent {
     /*
      * 페이지 단위로 메일 목록을 보여주어야 함.
      */
-    public String getMessageList(int n, int currentpage) { // n = 0 메일 읽기, n = 1 내게 쓴 메일함, n = 2 휴지통
+    public String getMessageList(int n, int currentpage) { // n = 0 메일 읽기, n = 1 내게 쓴 메일함, n = 2 스팸메일
         String result = "";
         Message[] messages = null;
 
@@ -137,6 +137,16 @@ public class Pop3Agent {
             Paging paging = new Paging();
             paging.setTotalmail(messages.length);
             paging.setCurrentpage(currentpage);
+            if(n==0){
+                paging.setPagename("main_menu");
+            }
+            else if(n==1){
+                paging.setPagename("me_mail_menu");
+            }
+            else if(n==2){
+                paging.setPagename("spam_mail");
+            }
+            
             int startmail = paging.getTotalmail() - (currentpage * paging.getPostmail());
             int endmail = paging.getTotalmail()  - ((currentpage - 1) * paging.getPostmail());
             if(startmail<0){

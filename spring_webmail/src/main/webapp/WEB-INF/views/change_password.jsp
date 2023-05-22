@@ -32,7 +32,7 @@
                 </tr>
                 <tr>
                     <td>기존 암호 </td>
-                    <td> <input type="password" name="oldpassword" value="" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$" id="pw" size="20" required/> </td>
+                    <td> <input type="password" name="oldpassword" value="" id="pw" size="20" required/> </td>
                 </tr>
                 <tr>
                     <td>새암호 </td>

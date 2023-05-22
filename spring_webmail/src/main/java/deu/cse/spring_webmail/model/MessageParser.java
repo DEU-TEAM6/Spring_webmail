@@ -57,8 +57,6 @@ public class MessageParser {
             if (parseBody) {
                 getPart(message);
             }
-            // 220611 LJM: 필요시 true로 하여 메시지 본문 볼 수 있도록 할 것.
-            // printMessage(false);  
             //  예외가 발생하지 않았으므로 정상적으로 동작하였음.
             status = true;
         } catch (Exception ex) {
@@ -134,22 +132,6 @@ public class MessageParser {
                     getPart(mp.getBodyPart(i));
                 }
             }
-        }
-    }
-
-    private void printMessage(boolean printBody) {
-        System.out.println("From: " + fromAddress);
-        System.out.println("To: " + toAddress);
-        System.out.println("CC: " + ccAddress);
-        System.out.println("Date: " + sentDate);
-        System.out.println("Subject: " + subject);
-
-        if (printBody) {
-            System.out.println("본 문");
-            System.out.println("---------------------------------");
-            System.out.println(body);
-            System.out.println("---------------------------------");
-            System.out.println("첨부파일: " + fileName);
         }
     }
 
