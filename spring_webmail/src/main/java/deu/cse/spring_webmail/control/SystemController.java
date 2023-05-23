@@ -162,8 +162,6 @@ public class SystemController {
 
     @GetMapping("/admin_menu")
     public String adminMenu(Model model) {
-        log.debug("root.id = {}, root.password = {}, admin.id = {}",
-                ROOT_ID, ROOT_PASSWORD, ADMINISTRATOR);
 
         model.addAttribute("userList", getUserList());
         return "admin/admin_menu";
@@ -177,8 +175,7 @@ public class SystemController {
     @PostMapping("/add_user.do")
     public String addUserDo(@RequestParam String id, @RequestParam String password,
             RedirectAttributes attrs) {
-        log.debug("add_user.do: id = {}, password = {}, port = {}",
-                id, password, JAMES_CONTROL_PORT);
+
 
         try {
             String cwd = ctx.getRealPath(".");
@@ -207,8 +204,6 @@ public class SystemController {
     @PostMapping("/register.do")
     public String registerDo(@RequestParam String id, @RequestParam String password, @RequestParam String passwordcheck,
             RedirectAttributes attrs) {
-        log.debug("register.do: id = {}, password = {}, port = {}",
-                id, password, JAMES_CONTROL_PORT);
         try {
             String cwd = ctx.getRealPath(".");
             UserAdminAgent agent = new UserAdminAgent(JAMES_HOST, JAMES_CONTROL_PORT, cwd,
@@ -238,8 +233,6 @@ public class SystemController {
         String path = "";
         String sessionPW = (String) session.getAttribute("password");
 
-        log.debug("register.do: id = {}, password = {}, port = {}",
-                id, password, JAMES_CONTROL_PORT);
         try {
             String cwd = ctx.getRealPath(".");
             UserAdminAgent agent = new UserAdminAgent(JAMES_HOST, JAMES_CONTROL_PORT, cwd,
