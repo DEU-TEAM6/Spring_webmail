@@ -63,7 +63,6 @@ public class SmtpAgent {
 
             // msg.setFrom(new InternetAddress(this.userid + "@" + this.host));
             msg.setFrom(new InternetAddress(this.userid));  // 200102 LJM - 테스트 목적으로 수정
-            //msg.setFrom(new InternetAddress("jongmin@deu.ac.kr"));
 
 
             // setRecipient() can be called repeatedly if ';' or ',' exists
@@ -125,10 +124,10 @@ public class SmtpAgent {
                 }
             }
             status = true;
+            return status;
         } catch (Exception ex) {
             log.error("sendMessage() error: {}", ex);
-        } finally {
             return status;
-        }
+        } 
     }  // sendMessage()
 }

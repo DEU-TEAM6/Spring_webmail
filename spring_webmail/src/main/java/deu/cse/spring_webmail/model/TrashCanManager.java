@@ -168,8 +168,8 @@ public class TrashCanManager {
                     }
                 }
             }
-            pstmt.executeUpdate();
             if (pstmt != null) {
+                pstmt.executeUpdate();
                 pstmt.close();
             }
             if (conn != null) {
