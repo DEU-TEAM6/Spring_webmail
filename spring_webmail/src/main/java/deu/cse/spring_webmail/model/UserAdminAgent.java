@@ -146,8 +146,6 @@ public class UserAdminAgent {
         List<String> userList = new LinkedList<String>();
         byte[] messageBuffer = new byte[1024];
 
-        log.info("root.id = {}, root.password = {}", ROOT_ID, ROOT_PASSWORD);
-
         if (!isConnected) {
             return userList;
         }
@@ -267,8 +265,6 @@ public class UserAdminAgent {
         boolean returnVal = false;
         String sendMessage;
         String recvMessage;
-
-        log.info("connect() : root.id = {}, root.password = {}", ROOT_ID, ROOT_PASSWORD);
 
         // root 인증: id, passwd - default: root
         // 1: Login Id message 수신

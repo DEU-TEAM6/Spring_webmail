@@ -115,7 +115,6 @@ public class ReadController {
 
     @GetMapping("/delete_mail.do")
     public String deleteMailDo(@RequestParam("msgid") Integer msgId, RedirectAttributes attrs) {
-        log.debug("delete_mail.do: msgid = {}", msgId);
 
         String host = (String) session.getAttribute("host");
         String userid = (String) session.getAttribute("userid");
@@ -134,7 +133,6 @@ public class ReadController {
 
     @GetMapping("/trashcan_mail.do")
     public String trashcanMailDo(@RequestParam("message_name") String message_name, @RequestParam("type") String type, RedirectAttributes attrs) {
-        log.debug("restore_mail.do: message_name = {}", message_name);
 
         String url = loadDB.getInstance().getUrl();
         String id = loadDB.getInstance().getId();

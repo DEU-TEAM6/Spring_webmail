@@ -43,7 +43,6 @@ public class WriteController {
     
     @GetMapping("/write_mail")
     public String writeMail() {
-        log.debug("write_mail called...");
         session.removeAttribute("sender");  // 220612 LJM - 메일 쓰기 시는 
         return "write_mail/write_mail";
     }
@@ -53,8 +52,6 @@ public class WriteController {
             @RequestParam String subj, @RequestParam String body, 
             @RequestParam(name="file1") MultipartFile upFile,
             RedirectAttributes attrs) {
-        log.debug("write_mail.do: to = {}, cc = {}, subj = {}, body = {}, file1 = {}",
-                to, cc, subj, body, upFile.getOriginalFilename());
         // FormParser 클래스의 기능은 매개변수로 모두 넘어오므로 더이상 필요 없음.
         // 업로드한 파일이 있으면 해당 파일을 UPLOAD_FOLDER에 저장해 주면 됨.
         if (!"".equals(upFile.getOriginalFilename())) {
