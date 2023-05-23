@@ -11,15 +11,6 @@
 
 <!DOCTYPE html>
 
-<!-- 제어기에서 처리하면 로직 관련 소스 코드 제거 가능!
-<jsp:useBean id="pop3" scope="page" class="deu.cse.spring_webmail.model.Pop3Agent" />
-<%
-    pop3.setHost((String) session.getAttribute("host"));
-    pop3.setUserid((String) session.getAttribute("userid"));
-    pop3.setPassword((String) session.getAttribute("password"));
-%>
--->
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -38,8 +29,6 @@
             <jsp:include page="sidebar_menu.jsp" />
         </div>
 
-
-        <!-- 메시지 삭제 링크를 누르면 바로 삭제되어 실수할 수 있음. 해결 방법은? -->
         <table border="1">
             <thead>
                 <tr>
@@ -57,7 +46,7 @@
                         <td>${row.title}</td>
                         <td>${row.last_updated}</td>
                         <td><a href="trashcan_mail.do?message_name=${row.message_name}&type=restore"> 복원 </a></td>
-                        <td><a href="trashcan_mail.do?message_name=${row.message_name}&type=delete"> 영구삭제 </a></td>
+                        <td><a href="trashcan_mail.do?message_name=${row.message_name}&type=delete"onclick="return confirm('정말 삭제하시겠습니까?')">영구삭제</a></td>
                     </tr>
                 </c:forEach>
             </tbody>

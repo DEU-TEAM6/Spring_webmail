@@ -31,8 +31,8 @@ public class loadDB {
                 setPw(props.getProperty("pw"));
                 setUrl(url = props.getProperty("url"));
                 setDriver(props.getProperty("driver"));
-            } catch (IOException e){
-                System.out.println(e);
+            } catch (Exception e){
+                e.getMessage();
             }
     }
     public static synchronized loadDB getInstance() { 
