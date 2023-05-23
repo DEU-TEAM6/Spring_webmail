@@ -152,8 +152,6 @@ public class Pop3Agent {
             if(startmail<0){
                 startmail = 0;
             }
-            System.out.println("시작"+startmail);
-            System.out.println("끝"+endmail);
             if (n == 0) {//전체 출력
                 if (messages.length < paging.getPostmail()) {
                     result = formatter.getMessageTable(messages, 0, startmail, messages.length);
