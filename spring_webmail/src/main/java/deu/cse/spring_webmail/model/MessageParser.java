@@ -59,10 +59,10 @@ public class MessageParser {
             }
             //  예외가 발생하지 않았으므로 정상적으로 동작하였음.
             status = true;
+            return status;
         } catch (Exception ex) {
             log.error("MessageParser.parse() - Exception : {}", ex.getMessage());
             status = false;
-        } finally {
             return status;
         }
     }

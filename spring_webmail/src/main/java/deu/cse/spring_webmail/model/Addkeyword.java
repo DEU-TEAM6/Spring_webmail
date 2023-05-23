@@ -81,8 +81,8 @@ public class Addkeyword {
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, userid);
             pstmt.setString(2, keyword);
-            pstmt.executeUpdate();
             if (pstmt != null) {
+                pstmt.executeUpdate();
                 pstmt.close();
             }
             if (conn != null) {

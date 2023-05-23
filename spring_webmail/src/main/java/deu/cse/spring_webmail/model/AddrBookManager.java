@@ -82,18 +82,19 @@ public class AddrBookManager {
             pstmt.setString(1, userid);
             pstmt.setString(2, adduser);
             pstmt.setString(3, note);
-            pstmt.executeUpdate();
             if (pstmt != null) {
+                pstmt.executeUpdate();
                 pstmt.close();
             }
             if (conn != null) {
                 conn.close();
             }
             result = true;
+            return result;
         } catch (Exception ex) {
             log.error("insertRow 오류가 발생했습니다. (발생 오류: {})", ex.getMessage());
+            return result;
         }
-        return result;
     }
 
     public boolean deleteaddrbook(String userid, String address) {
@@ -119,10 +120,11 @@ public class AddrBookManager {
                 conn.close();
             }
             result = true;
+            return result;
         } catch (Exception ex) {
             log.error("insertRow 오류가 발생했습니다. (발생 오류: {})", ex.getMessage());
+            return result;
         }
-        return result;
     }
 
     public boolean searchuser(String address) { // 입력한 ID가 USERS테이블에 있으면 TRUE반환
@@ -150,9 +152,10 @@ public class AddrBookManager {
             if (conn != null) {
                 conn.close();
             }
+            return result;
         } catch (Exception ex) {
             log.error("insertRow 오류가 발생했습니다. (발생 오류: {})", ex.getMessage());
+            return result;
         }
-        return result;
     }
 }
