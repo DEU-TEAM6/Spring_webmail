@@ -80,7 +80,7 @@ public class MessageFormatter {
                         + " <td id=date>" + parser.getSentDate() + "</td>"
                         + " <td id=delete>"
                         + "<a href=delete_mail.do"
-                        + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
+                        + "?msgid=" + (i + 1) + " onclick=\"return confirm('휴지통으로 이동합니다. 정말 삭제하시겠습니까?');\"> 삭제 </a>" + "</td>"
                         + " </tr>");
             } else if (n == 1) { //내게 쓴 메일함
                 if (parser.getFromAddress().equals(userid)) {
@@ -93,7 +93,7 @@ public class MessageFormatter {
                             + " <td id=date>" + parser.getSentDate() + "</td>"
                             + " <td id=delete>"
                             + "<a href=delete_mail.do"
-                            + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
+                            + "?msgid=" + (i + 1) + " onclick=\"return confirm('휴지통으로 이동합니다. 정말 삭제하시겠습니까?');\"> 삭제 </a>" + "</td>"
                             + " </tr>");
                 }
             } else if (n == 2) { //스팸메일함
@@ -108,7 +108,7 @@ public class MessageFormatter {
                                 + " <td id=date>" + parser.getSentDate() + "</td>"
                                 + " <td id=delete>"
                                 + "<a href=delete_mail.do"
-                                + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
+                                + "?msgid=" + (i + 1) + " onclick=\"return confirm('휴지통으로 이동합니다. 정말 삭제하시겠습니까?');\"> 삭제 </a>" + "</td>"
                                 + " </tr>");
                     }
                 }
@@ -151,7 +151,7 @@ public class MessageFormatter {
                             + " <td id=date>" + parser.getSentDate() + "</td>"
                             + " <td id=delete>"
                             + "<a href=delete_mail.do"
-                            + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
+                            + "?msgid=" + (i + 1) + " onclick=\"return confirm('휴지통으로 이동합니다. 정말 삭제하시겠습니까?');\"> 삭제 </a>" + "</td>"
                             + " </tr>");
                 }
             } else { // 제목을 선택한 경우
@@ -165,7 +165,7 @@ public class MessageFormatter {
                             + " <td id=date>" + parser.getSentDate() + "</td>"
                             + " <td id=delete>"
                             + "<a href=delete_mail.do"
-                            + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
+                            + "?msgid=" + (i + 1) + " onclick=\"return confirm('휴지통으로 이동합니다. 정말 삭제하시겠습니까?');\"> 삭제 </a>" + "</td>"
                             + " </tr>");
                 }
             }
@@ -204,7 +204,7 @@ System.out.println(adduser);
                             + " <td id=date>" + parser.getSentDate() + "</td>"
                             + " <td id=delete>"
                             + "<a href=delete_mail.do"
-                            + "?msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
+                            + "?msgid=" + (i + 1) + " onclick=\"return confirm('휴지통으로 이동합니다. 정말 삭제하시겠습니까?');\"> 삭제 </a>" + "</td>"
                             + " </tr>");
                 }
           
