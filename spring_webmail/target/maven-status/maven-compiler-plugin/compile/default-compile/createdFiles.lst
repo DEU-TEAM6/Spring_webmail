@@ -11,6 +11,7 @@ deu\cse\spring_webmail\control\SystemController.class
 deu\cse\spring_webmail\model\loadDB.class
 deu\cse\spring_webmail\model\MessageFormatter.class
 deu\cse\spring_webmail\model\SmtpAgent.class
+.netbeans_automatic_build
 deu\cse\spring_webmail\model\AddkeywordRow.class
 deu\cse\spring_webmail\model\UserAdminAgent.class
 deu\cse\spring_webmail\control\ReadController.class
