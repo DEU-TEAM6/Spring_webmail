@@ -8,7 +8,9 @@ import com.sun.mail.smtp.SMTPMessage;
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
 import jakarta.activation.FileDataSource;
+import jakarta.mail.BodyPart;
 import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
 import jakarta.mail.Multipart;
 import jakarta.mail.Session;
 import jakarta.mail.Transport;
@@ -18,6 +20,7 @@ import jakarta.mail.internet.MimeMultipart;
 import jakarta.mail.internet.MimeUtility;
 import java.io.File;
 import java.util.Properties;
+import java.util.concurrent.CompletableFuture;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -29,13 +32,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SmtpAgent {
 
-    @Getter @Setter protected String host = null;
-    @Getter @Setter protected String userid = null;
-    @Getter @Setter protected String to = null;
-    @Getter @Setter protected String cc = null;
-    @Getter @Setter protected String subj = null;
-    @Getter @Setter protected String body = null;
-    @Getter @Setter protected String file1 = null;
+    @Getter
+    @Setter
+    protected String host = null;
+    @Getter
+    @Setter
+    protected String userid = null;
+    @Getter
+    @Setter
+    protected String to = null;
+    @Getter
+    @Setter
+    protected String cc = null;
+    @Getter
+    @Setter
+    protected String subj = null;
+    @Getter
+    @Setter
+    protected String body = null;
+    @Getter
+    @Setter
+    protected String file1 = null;
 
     public SmtpAgent(String host, String userid) {
         this.host = host;
@@ -63,7 +80,6 @@ public class SmtpAgent {
 
             // msg.setFrom(new InternetAddress(this.userid + "@" + this.host));
             msg.setFrom(new InternetAddress(this.userid));  // 200102 LJM - 테스트 목적으로 수정
-
 
             // setRecipient() can be called repeatedly if ';' or ',' exists
             if (this.to.indexOf(';') != -1) {
@@ -99,22 +115,34 @@ public class SmtpAgent {
             mp.addBodyPart(mbp);
 
             // 첨부 파일 추가
-            if (this.file1 != null) {
-                MimeBodyPart a1 = new MimeBodyPart();
-                DataSource src = new FileDataSource(this.file1);
-                a1.setDataHandler(new DataHandler(src));
-                // 22011 LJM: 윈도우즈/우분투에 따라서 달라져야 함
-                int index = this.file1.lastIndexOf(File.separator);
-                String fileName = this.file1.substring(index + 1);
-                // "B": base64, "Q": quoted-printable
-                a1.setFileName(MimeUtility.encodeText(fileName, "UTF-8", "B"));
-                mp.addBodyPart(a1);
-            }
-            msg.setContent(mp);
+            // 20183215 정현수 비동기 처리(속도 개선)
+            long startTime = System.currentTimeMillis(); // 속도 개선 테스트
+            
+           CompletableFuture<Void> attachmentFuture = CompletableFuture.runAsync(() -> {
+                try {
+                    if (this.file1 != null) {
+                        MimeBodyPart a1 = new MimeBodyPart();
+                        DataSource src = new FileDataSource(this.file1);
+                        a1.setDataHandler(new DataHandler(src));
 
+                        int index = this.file1.lastIndexOf(File.separator);
+                        String fileName = this.file1.substring(index + 1);
+                        a1.setFileName(MimeUtility.encodeText(fileName, "UTF-8", "B"));
+
+                        mp.addBodyPart(a1);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to attach file: " + this.file1, e);
+                }
+            });
+            attachmentFuture.join();
+            msg.setContent(mp);
             // 메일 전송
             Transport.send(msg);
-
+            long endTime = System.currentTimeMillis(); // 변경 후 실행 시간 측정 종료
+            long elapsedTime = endTime - startTime;
+            System.out.println("첨부 파일 추가 소요 시간 (변경 후): " + elapsedTime + "ms"); 
+            
             // 메일 전송 완료되었으므로 서버에 저장된
             // 첨부 파일 삭제함
             if (this.file1 != null) {
@@ -128,6 +156,6 @@ public class SmtpAgent {
         } catch (Exception ex) {
             log.error("sendMessage() error: {}", ex);
             return status;
-        } 
+        }
     }  // sendMessage()
 }
