@@ -10,7 +10,7 @@
 <%-- @taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" --%>
 
 
-<html>
+<html lang="ko" xml:lang="ko">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>메일 쓰기 화면</title>
@@ -26,19 +26,19 @@
         <div id="main">
             <%-- <jsp:include page="mail_send_form.jsp" /> --%>
             <form enctype="multipart/form-data" method="POST" action="write_mail.do" >
-                <table>
+                <table summary="메일 쓰기 테이블">
                     <tr>
-                        <td> 수신 </td>
+                        <th id="수신"> 수신 </th>
                         <td> <input type="text" name="to" size="80"
                                     value="${!empty param['sender'] ? param['sender'] : ''}">
                         </td>
                     </tr>
                     <tr>
-                        <td>참조</td>
+                        <th id="참조">참조</th>
                         <td> <input type="text" name="cc" size="80">  </td>
                     </tr>
                     <tr>
-                        <td> 메일 제목 </td>
+                        <th id="제목"> 메일 제목 </th>
                         <td> <input type="text" name="subj" size="80" 
                                     value="${!empty param['sender'] ? "RE: " += sessionScope['subject'] : ''}" >  </td>
                     </tr>

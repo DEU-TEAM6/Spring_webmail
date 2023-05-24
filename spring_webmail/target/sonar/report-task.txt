@@ -1,0 +1,6 @@
+projectKey=deu.cse:spring_webmail
+serverUrl=http://localhost:9000
+serverVersion=10.0.0.68432
+dashboardUrl=http://localhost:9000/dashboard?id=deu.cse%3Aspring_webmail
+ceTaskId=AYhOwk5UHcLOFIu17y_W
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYhOwk5UHcLOFIu17y_W

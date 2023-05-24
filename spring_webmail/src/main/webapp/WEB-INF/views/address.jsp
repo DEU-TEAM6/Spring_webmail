@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 
 
-<html>
+<html lang="ko" xml:lang="ko">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>주소록 화면</title>
@@ -32,10 +32,11 @@
 
 
         <!-- 메시지 삭제 링크를 누르면 바로 삭제되어 실수할 수 있음. 해결 방법은? -->
-        <div id="main">
+        <div id="main"style="text-align: center;">
             <input type="button" value="주소록 추가" onclick="location.href = 'insert_address'">
             <br>
-            <table border="1">
+            <br>
+            <table border="1" summary="사용자 목록 테이블">
                 <thead>
                     <tr>
                         <th>사용자</th>

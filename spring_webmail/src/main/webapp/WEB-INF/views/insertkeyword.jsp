@@ -21,7 +21,7 @@
 %>
 -->
 
-<html>
+<html lang="ko" xml:lang="ko">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>키워드 관리</title>
@@ -42,14 +42,14 @@
 
 
         <!-- 메시지 삭제 링크를 누르면 바로 삭제되어 실수할 수 있음. 해결 방법은? -->
-        <div id="main">
-            <center>
-                <form name="keywordForm" action="addkeyword.do" method="POST">
-                    <br>
-                    <input type="text" name="keyword" placeholder="키워드 입력">&nbsp;<input type="submit" value="키워드추가" name="addkeyword"/>
-                </form>
-            </center> 
-            <table border="1">
+        <div id="main" style="text-align: center;">
+
+            <form name="keywordForm" action="addkeyword.do" method="POST">
+                <br>
+                <input type="text" name="keyword" placeholder="키워드 입력">&nbsp;<input type="submit" value="키워드추가" name="addkeyword"/>
+            </form>
+            <br>
+            <table border="1" summary="스팸 키워드 테이블">
                 <thead>
                     <tr>
                         <th>키워드</th>

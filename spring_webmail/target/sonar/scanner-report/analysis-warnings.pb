@@ -1,0 +1,3 @@
+ª
+ The properties 'sonar.login' and 'sonar.password' are deprecated and will be removed in the future. Please pass a token with the 'sonar.token' property instead.ØØˆö„1¥
+›Missing blame information for 33 files. This may lead to some features not working correctly. Please check the analysis logs and refer to <a href="https://docs.sonarqube.org/10.0/analyzing-source-code/scm-integration/" rel="noopener noreferrer" target="_blank">the documentation</a>.ã–‰ö„1

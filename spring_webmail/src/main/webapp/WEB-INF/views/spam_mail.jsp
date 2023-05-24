@@ -13,7 +13,7 @@
 
 
 
-<html>
+<html lang="ko" xml:lang="ko">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>스팸메일함</title>
@@ -22,9 +22,9 @@
             <c:if test="${!empty msg}">
             alert("${msg}");
             </c:if>
-                function insertkeyword(){
-                    retrun "insertkeyword";
-                }
+            function insertkeyword() {
+                retrun "insertkeyword";
+            }
         </script>
     </head>
     <body>
@@ -35,20 +35,18 @@
         </div>
 
 
-        <div id="main">
-            <center>
-                <form name="searchForm" action="search" method="POST">
-                    <input type="radio" name="chk_info" value="human" checked>보낸 사람
-                    <input type="radio" name="chk_info" value="contents" >제목
-                    <br>
-                    <input type="text" name="searchWord" placeholder="검색어 입력">&nbsp;<input type="submit" value="검색" name="search"/>
-                </form>
-            </center> 
-            
-                <input type="button" value="키워드 관리" onclick="location.href='insertkeyword'">
-            
+        <div id="main" style="text-align: center;">
+            <form name="searchForm" action="search" method="POST">
+                <input type="radio" name="chk_info" value="human" checked>보낸 사람
+                <input type="radio" name="chk_info" value="contents" >제목
+                <br>
+                <input type="text" name="searchWord" placeholder="검색어 입력">&nbsp;<input type="submit" value="검색" name="search"/>
+            </form>
             <br>
-            
+            <input type="button" value="키워드 관리" onclick="location.href = 'insertkeyword'">
+            <br>
+            <br>
+
             ${messageList}
         </div>
 

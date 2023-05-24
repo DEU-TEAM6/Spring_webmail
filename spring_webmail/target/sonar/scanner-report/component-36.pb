@@ -1,0 +1,1 @@
+$ 2jspX:hr+src/main/webapp/WEB-INF/views/trash_can.jsp
