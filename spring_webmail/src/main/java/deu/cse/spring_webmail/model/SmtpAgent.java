@@ -117,8 +117,8 @@ public class SmtpAgent {
             // 첨부 파일 추가
             // 20183215 정현수 비동기 처리(속도 개선)
             long startTime = System.currentTimeMillis(); // 속도 개선 테스트
-            
-           CompletableFuture<Void> attachmentFuture = CompletableFuture.runAsync(() -> {
+
+            CompletableFuture<Void> attachmentFuture = CompletableFuture.runAsync(() -> {
                 try {
                     if (this.file1 != null) {
                         MimeBodyPart a1 = new MimeBodyPart();
@@ -141,8 +141,8 @@ public class SmtpAgent {
             Transport.send(msg);
             long endTime = System.currentTimeMillis(); // 변경 후 실행 시간 측정 종료
             long elapsedTime = endTime - startTime;
-            System.out.println("첨부 파일 추가 소요 시간 (변경 후): " + elapsedTime + "ms"); 
-            
+            System.out.println("첨부 파일 추가 소요 시간 (변경 후): " + elapsedTime + "ms");
+
             // 메일 전송 완료되었으므로 서버에 저장된
             // 첨부 파일 삭제함
             if (this.file1 != null) {

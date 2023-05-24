@@ -135,45 +135,35 @@ public class Pop3Agent {
 
             MessageFormatter formatter = new MessageFormatter(userid);  //3.5
             Paging paging = new Paging();
-            paging.setTotalmail(messages.length);
+            MessageCounter counter = new MessageCounter();
+            int count = counter.getMessageCount(messages, n, userid);
+            paging.setTotalmail(count);
+            System.out.println(count);
+            System.out.println(messages.length);
             paging.setCurrentpage(currentpage);
-            if(n==0){
+
+            if (n == 0) {
                 paging.setPagename("main_menu");
-            }
-            else if(n==1){
+            } else if (n == 1) {
                 paging.setPagename("me_mail_menu");
-            }
-            else if(n==2){
+            } else if (n == 2) {
                 paging.setPagename("spam_mail");
             }
-            
             int startmail = paging.getTotalmail() - (currentpage * paging.getPostmail());
-            int endmail = paging.getTotalmail()  - ((currentpage - 1) * paging.getPostmail());
-            if(startmail<0){
+            int endmail = paging.getTotalmail() - ((currentpage - 1) * paging.getPostmail());
+            if (startmail < 0) {
                 startmail = 0;
             }
             if (n == 0) {//전체 출력
-                if (messages.length < paging.getPostmail()) {
-                    result = formatter.getMessageTable(messages, 0, startmail, messages.length);
-                } else {
-                    result = formatter.getMessageTable(messages, 0, startmail, endmail);   // 3.6
-                }
-                result = result + paging.pagination();
+                result = formatter.getMessageTable(messages, 0, startmail, endmail);
+
             } else if (n == 1) { // 내게 쓴 메일함
-                if (messages.length < paging.getPostmail()) {
-                    result = formatter.getMessageTable(messages, 1, startmail, messages.length);
-                } else {
-                    result = formatter.getMessageTable(messages, 1, startmail, endmail);   // 3.6
-                }
-                result = result + paging.pagination();
+                result = formatter.getMessageTable(messages, 1, startmail, endmail);   // 3.6
+
             } else if (n == 2) {//스팸 메일함
-                if (messages.length < paging.getPostmail()) {
-                    result = formatter.getMessageTable(messages, 2, startmail, messages.length);
-                } else {
-                    result = formatter.getMessageTable(messages, 2, startmail, endmail);   // 3.6
-                }
-                result = result + paging.pagination();
+                result = formatter.getMessageTable(messages, 2, startmail, endmail);   // 3.6 
             }
+            result = result + paging.pagination();
             folder.close(true);  // 3.7
             store.close();       // 3.8
             return result;
@@ -248,7 +238,7 @@ public class Pop3Agent {
             return result;
         }
     }
-    
+
     public String getAddressList(String adduser) {
         String result = "";
         Message[] messages = null;
@@ -282,8 +272,6 @@ public class Pop3Agent {
             return result;
         }
     }
-    
-    
 
     private boolean connectToStore() {
         boolean status = false;
