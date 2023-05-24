@@ -63,7 +63,7 @@ public class Paging {
             buffer.append("<span id=pre><a href="+pagename+"?currentpage=" + (currentpage - 1) + " title=\"이전 페이지\"> << </a></span> ");
         }
         for (int page = startpage; page <= endpage; page++){
-            buffer.append("<span id=page><a href="+pagename+"?currentpage=" + page + " title=\"페이지 변경\"> " + page + "</a> </span>");
+            buffer.append("<span id=page><a href="+pagename+"?currentpage=" + page + " title=\"페이지 변경\"> [" + page + "]</a> </span>");
         }
         if(next){
             buffer.append("<span id=pre><a href="+pagename+"?currentpage=" + (currentpage + 1) + " title=\"다음 페이지\"> >> </a></span> ");

@@ -12,6 +12,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  *
@@ -47,7 +49,7 @@ public class MessageFormatter {
             keywordStrings.add(row.getKeyword());
         }
         String joinedKeywords = String.join(" ", keywordStrings);
-        
+
         // 메시지 제목 보여주기
         buffer.append("<table>");  // table start
         buffer.append("<tr> "
@@ -57,9 +59,11 @@ public class MessageFormatter {
                 + " <th> 보낸 날짜 </td>   "
                 + " <th> 삭제 </td>   "
                 + " </tr>");
-
-        for (int i = endIndex - 1; i >= startIndex; i--) {
-
+        
+        
+        MessageCounter counter = new MessageCounter();
+        int count = counter.getMessageCount(messages, n, userid);
+        for (int i = messages.length - 1; i >= 0; i--) {
             MessageParser parser = new MessageParser(messages[i], userid);
             parser.parse(false);  // envelope 정보만 필요
             boolean check = false;
@@ -69,21 +73,13 @@ public class MessageFormatter {
                 if (parser.getSubject().contains(keywordStrings.get(j))) {// || addkey.GetBody(userid).contains(keywordStrings.get(j))
                     check = true;
                 }
+                if (parser.getFromAddress().equals(userid)) {
+                    check = false;
+                }
             }
             if (n == 0 && check == false) { // 모두
-                buffer.append("<tr> "
-                        + " <td id=no>" + (i + 1) + " </td> "
-                        + " <td id=sender>" + parser.getFromAddress() + "</td>"
-                        + " <td id=subject> "
-                        + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
-                        + parser.getSubject() + "</a> </td>"
-                        + " <td id=date>" + parser.getSentDate() + "</td>"
-                        + " <td id=delete>"
-                        + "<a href=delete_mail.do"
-                        + "?msgid=" + (i + 1) + " onclick=\"return confirm('휴지통으로 이동합니다. 정말 삭제하시겠습니까?');\"> 삭제 </a>" + "</td>"
-                        + " </tr>");
-            } else if (n == 1) { //내게 쓴 메일함
-                if (parser.getFromAddress().equals(userid)) {
+                count--;
+                if (count >= startIndex && count < endIndex) {
                     buffer.append("<tr> "
                             + " <td id=no>" + (i + 1) + " </td> "
                             + " <td id=sender>" + parser.getFromAddress() + "</td>"
@@ -96,9 +92,10 @@ public class MessageFormatter {
                             + "?msgid=" + (i + 1) + " onclick=\"return confirm('휴지통으로 이동합니다. 정말 삭제하시겠습니까?');\"> 삭제 </a>" + "</td>"
                             + " </tr>");
                 }
-            } else if (n == 2) { //스팸메일함
-                if (parser.getFromAddress().equals(userid) == false) { //parser.getSubject().contains(joinedKeywords)
-                    if (check) {
+            } else if (n == 1) { //내게 쓴 메일함
+                if (parser.getFromAddress().equals(userid)) {
+                    count--;
+                    if (count >= startIndex && count < endIndex) {
                         buffer.append("<tr> "
                                 + " <td id=no>" + (i + 1) + " </td> "
                                 + " <td id=sender>" + parser.getFromAddress() + "</td>"
@@ -112,8 +109,29 @@ public class MessageFormatter {
                                 + " </tr>");
                     }
                 }
+            } else if (n == 2) { //스팸메일함
+                if (parser.getFromAddress().equals(userid) == false) { //parser.getSubject().contains(joinedKeywords)
+                    if (check) {
+                        count--;
+                        if (count >= startIndex && count < endIndex) {
+                            buffer.append("<tr> "
+                                    + " <td id=no>" + (i + 1) + " </td> "
+                                    + " <td id=sender>" + parser.getFromAddress() + "</td>"
+                                    + " <td id=subject> "
+                                    + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
+                                    + parser.getSubject() + "</a> </td>"
+                                    + " <td id=date>" + parser.getSentDate() + "</td>"
+                                    + " <td id=delete>"
+                                    + "<a href=delete_mail.do"
+                                    + "?msgid=" + (i + 1) + " onclick=\"return confirm('휴지통으로 이동합니다. 정말 삭제하시겠습니까?');\"> 삭제 </a>" + "</td>"
+                                    + " </tr>");
+                        }
+                    }
+                }
             }
-
+            if (count < startIndex) {
+                break; // 페이지 범위를 초과하면 루프 종료
+            }
         }
         buffer.append("</table>");
 
@@ -176,8 +194,8 @@ public class MessageFormatter {
         return buffer.toString();
 //        return "MessageFormatter 테이블 결과";
     }
-    
-     public String getMessageTable(Message[] messages,String adduser) {
+
+    public String getMessageTable(Message[] messages, String adduser) {
         StringBuilder buffer = new StringBuilder();
         // 메시지 제목 보여주기
         buffer.append("<table>");  // table start
@@ -193,21 +211,21 @@ public class MessageFormatter {
             parser.parse(false);  // envelope 정보만 필요
             // 메시지 헤더 포맷
             // 추출한 정보를 출력 포맷 사용하여 스트링으로 만들기
-                if (parser.getFromAddress().equals(adduser)) { // 주소록에 추가한 사용자 메일만 보기
-                    buffer.append("<tr> "
-                            + " <td id=no>" + (i + 1) + " </td> "
-                            + " <td id=sender>" + parser.getFromAddress() + "</td>"
-                            + " <td id=subject> "
-                            + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
-                            + parser.getSubject() + "</a> </td>"
-                            + " <td id=date>" + parser.getSentDate() + "</td>"
-                            + " <td id=delete>"
-                            + "<a href=delete_mail.do"
-                            + "?msgid=" + (i + 1) + " onclick=\"return confirm('휴지통으로 이동합니다. 정말 삭제하시겠습니까?');\"> 삭제 </a>" + "</td>"
-                            + " </tr>");
-                }
-          
+            if (parser.getFromAddress().equals(adduser)) { // 주소록에 추가한 사용자 메일만 보기
+                buffer.append("<tr> "
+                        + " <td id=no>" + (i + 1) + " </td> "
+                        + " <td id=sender>" + parser.getFromAddress() + "</td>"
+                        + " <td id=subject> "
+                        + " <a href=show_message?msgid=" + (i + 1) + " title=\"메일 보기\"> "
+                        + parser.getSubject() + "</a> </td>"
+                        + " <td id=date>" + parser.getSentDate() + "</td>"
+                        + " <td id=delete>"
+                        + "<a href=delete_mail.do"
+                        + "?msgid=" + (i + 1) + " onclick=\"return confirm('휴지통으로 이동합니다. 정말 삭제하시겠습니까?');\"> 삭제 </a>" + "</td>"
+                        + " </tr>");
             }
+
+        }
         buffer.append("</table>");
 
         return buffer.toString();
