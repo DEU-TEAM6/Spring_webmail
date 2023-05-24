@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 
 
-<html>
+<html lang="ko" xml:lang="ko">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>받은 메일보기</title>

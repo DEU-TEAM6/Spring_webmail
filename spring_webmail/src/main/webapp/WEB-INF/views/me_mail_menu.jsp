@@ -14,13 +14,13 @@
 <!-- 제어기에서 처리하면 로직 관련 소스 코드 제거 가능!
 <jsp:useBean id="pop3" scope="page" class="deu.cse.spring_webmail.model.Pop3Agent" />
 <%
-            pop3.setHost((String) session.getAttribute("host"));
-            pop3.setUserid((String) session.getAttribute("userid"));
-            pop3.setPassword((String) session.getAttribute("password"));
+    pop3.setHost((String) session.getAttribute("host"));
+    pop3.setUserid((String) session.getAttribute("userid"));
+    pop3.setPassword((String) session.getAttribute("password"));
 %>
 -->
 
-<html>
+<html lang="ko" xml:lang="ko">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>내게쓴 메일 화면</title>
@@ -38,17 +38,15 @@
             <jsp:include page="sidebar_menu.jsp" />
         </div>
 
-        <div id="main">
-            <center>
-                <form name="searchForm" action="search" method="POST">
-                    <input type="radio" name="chk_info" value="human"checked>보낸 사람
-                    <input type="radio" name="chk_info" value="contents" >제목
-                    <br>
-                    <input type="text" name="searchWord" placeholder="검색어 입력">&nbsp;<input type="submit" value="검색" name="search"/>
-                </form>
-            </center> 
+        <div id="main" style="text-align: center;">
+            <form name="searchForm" action="search" method="POST">
+                <input type="radio" name="chk_info" value="human"checked>보낸 사람
+                <input type="radio" name="chk_info" value="contents" >제목
+                <br>
+                <input type="text" name="searchWord" placeholder="검색어 입력">&nbsp;<input type="submit" value="검색" name="search"/>
+            </form>
             <br>
-              ${meMessageList}
+            ${meMessageList}
         </div>
 
         <%@include file="footer.jspf"%>

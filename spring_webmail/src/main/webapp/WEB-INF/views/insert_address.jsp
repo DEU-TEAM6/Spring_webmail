@@ -20,7 +20,7 @@
 %>
 -->
 
-<html>
+<html lang="ko" xml:lang="ko">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>주소록 추가폼</title>
@@ -43,21 +43,19 @@
         <!-- 메시지 삭제 링크를 누르면 바로 삭제되어 실수할 수 있음. 해결 방법은? -->
         <div id="main">
             <form action="insert_address.do" method="POST">
-                <table border="0">
+                <table border="0" summary="주소록 추가 테이블">
                     <tbody>
                         <tr>
-                            <td>이름</td><!-- comment -->
+                            <th id="이름">이름</th><!-- comment -->
                             <td><input type="text" name="name" size="20" /></td>
                         </tr>
-                    <td>비고</td><!-- comment -->
+                    <th id="비고">비고</th><!-- comment -->
                     <td><input type="text" name="note" value="" size="20" placeholder="추가할 사용자에대한 메모를 입력해주세요."/></td><!-- comment -->
                     </tr>
                     <tr>
                         <td colspan="2">
-                    <center>
-                        <input type="submit" value="추가" /> <input type="reset" value="초기화"/>
-                    </center>
-                    </td>
+                            <input type="submit" value="추가" /> <input type="reset" value="초기화"/>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

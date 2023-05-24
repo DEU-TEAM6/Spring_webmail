@@ -11,7 +11,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="ko" xml:lang="ko">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>휴지통 화면</title>
@@ -29,7 +29,7 @@
             <jsp:include page="sidebar_menu.jsp" />
         </div>
 
-        <table border="1">
+        <table border="1" summary="휴지통 테이블">
             <thead>
                 <tr>
                     <th>보낸 사람</th>

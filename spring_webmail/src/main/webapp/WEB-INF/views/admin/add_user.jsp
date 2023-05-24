@@ -8,7 +8,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="ko" xml:lang="ko">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>사용자 추가 화면</title>
@@ -25,13 +25,13 @@
             추가로 등록할 사용자 ID와 암호를 입력해 주시기 바랍니다. <br> <br>
 
             <form name="AddUser" action="add_user.do" method="POST">
-                <table border="0" align="left">
+                <table border="0" align="left" summary="사용자 추가 테이블">
                     <tr>
-                        <td>사용자 ID</td>
+                        <th id="사용자">사용자 ID</th>
                         <td> <input type="text" name="id" value="" size="20" />  </td>
                     </tr>
                     <tr>
-                        <td>암호 </td>
+                        <th id="암호">암호 </th>
                         <td> <input type="password" name="password" value="" /> </td>
                     </tr>
                     <tr>

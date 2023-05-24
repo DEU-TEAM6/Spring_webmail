@@ -20,4 +20,5 @@ deu\cse\spring_webmail\SpringWebmailApplication.class
 deu\cse\spring_webmail\model\AddkeywordRow$AddkeywordRowBuilder.class
 deu\cse\spring_webmail\control\CommandType.class
 deu\cse\spring_webmail\model\Addkeyword.class
+deu\cse\spring_webmail\model\MessageCounter.class
 deu\cse\spring_webmail\model\Pop3Agent.class
