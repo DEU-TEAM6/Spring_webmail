@@ -49,7 +49,7 @@ public class MessageFormatter {
         String joinedKeywords = String.join(" ", keywordStrings);
 
         // 메시지 제목 보여주기
-        buffer.append("<table>");  // table start
+        buffer.append("<table>");  // table start 
         buffer.append("<tr> "
                 + " <th> No. </td> "
                 + " <th> 보낸 사람 </td>"
@@ -57,18 +57,19 @@ public class MessageFormatter {
                 + " <th> 보낸 날짜 </td>   "
                 + " <th> 삭제 </td>   "
                 + " </tr>");
-        
-        
+
         MessageCounter counter = new MessageCounter();
         int count = counter.getMessageCount(messages, n, userid);
         for (int i = messages.length - 1; i >= 0; i--) {
             MessageParser parser = new MessageParser(messages[i], userid);
             parser.parse(false);  // envelope 정보만 필요
+            MessageParser parser1 = new MessageParser(messages[i], userid);
+            parser1.parse(true);  // envelope 정보만 필요
             boolean check = false;
             // 메시지 헤더 포맷
             // 추출한 정보를 출력 포맷 사용하여 스트링으로 만들기
             for (int j = 0; j < keywordStrings.size(); j++) {
-                if (parser.getSubject().contains(keywordStrings.get(j))) {// || addkey.GetBody(userid).contains(keywordStrings.get(j))
+                if (parser.getSubject().contains(keywordStrings.get(j)) || parser1.getBody().contains(keywordStrings.get(j))) {// || addkey.GetBody(userid).contains(keywordStrings.get(j))
                     check = true;
                 }
                 if (parser.getFromAddress().equals(userid)) {
@@ -149,7 +150,7 @@ public class MessageFormatter {
                 + " <th> 보낸 날짜 </td>   "
                 + " <th> 삭제 </td>   "
                 + " </tr>");
-        
+
         for (int i = messages.length - 1; i >= 0; i--) {
             MessageParser parser = new MessageParser(messages[i], userid);
             parser.parse(false);  // envelope 정보만 필요
