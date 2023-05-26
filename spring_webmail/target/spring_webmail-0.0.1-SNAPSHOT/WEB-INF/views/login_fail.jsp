@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 
+
 <!DOCTYPE html>
 
 
@@ -26,7 +27,7 @@
         <%@include file="header.jspf"%>
 
         <p id="login_fail">
-            <c:out value="${request.getParameter("userid")}" /> , 로그인이 실패하였습니다.
+             ${param.userid}, 로그인이 실패하였습니다.
 
             올바른 사용자 ID와 암호를 사용하여 로그인하시기 바랍니다.
 

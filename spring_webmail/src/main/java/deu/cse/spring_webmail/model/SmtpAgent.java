@@ -115,7 +115,7 @@ public class SmtpAgent {
             mp.addBodyPart(mbp);
 
             // 첨부 파일 추가
-            // 20183215 정현수 비동기 처리(속도 개선) 
+            // 20183215 정현수 비동기 처리(속도 개선)
             CompletableFuture<Void> attachmentFuture = CompletableFuture.runAsync(() -> {
                 try {
                     if (this.file1 != null) {
@@ -126,6 +126,7 @@ public class SmtpAgent {
                         int index = this.file1.lastIndexOf(File.separator);
                         String fileName = this.file1.substring(index + 1);
                         a1.setFileName(MimeUtility.encodeText(fileName, "UTF-8", "B"));
+
                         mp.addBodyPart(a1);
                     }
                 } catch (Exception e) {
@@ -135,7 +136,7 @@ public class SmtpAgent {
             attachmentFuture.thenAccept(result -> {
                 try {
                     msg.setContent(mp);
-                    // 메일 전송.
+                    // 메일 전송
                     Transport.send(msg);
                 } catch (Exception ex) {
                     log.error("Failed to send the email: {}", ex);

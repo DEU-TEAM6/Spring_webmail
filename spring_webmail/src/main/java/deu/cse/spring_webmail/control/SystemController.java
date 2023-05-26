@@ -68,7 +68,7 @@ public class SystemController {
     }
 
     @RequestMapping(value = "/login.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public String loginDo(@RequestParam Integer menu) {
+    public String loginDo(Model model, @RequestParam Integer menu) {
         String url = "";
         log.debug("로그인 처리: menu = {}", menu);
         switch (menu) {
@@ -76,7 +76,6 @@ public class SystemController {
                 String host = (String) request.getSession().getAttribute("host");
                 String userid = request.getParameter("userid");
                 String password = request.getParameter("passwd");
-
                 // Check the login information is valid using <<model>>Pop3Agent.
                 Pop3Agent pop3Agent = new Pop3Agent(host, userid, password);
                 boolean isLoginSuccess = pop3Agent.validate();
@@ -94,7 +93,7 @@ public class SystemController {
                         url = "redirect:/main_menu"; 
                     }
                 } else {
-                    url = "redirect:/login_fail";
+                    url = "redirect:/login_fail?userid="+userid;
                 }
                 break;
             case CommandType.LOGOUT:
